@@ -12,15 +12,25 @@
     <header>
         <div class="container">
             <div class="logo">
-                <h1>FerreExpress</h1>
+                <h1><a href="index.html" class="logo-link">FerreExpress</a></h1>
             </div>
             <nav>
                 <ul>
-                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="index.html">Inicio</a></li>
                     <li><a href="#productos">Productos</a></li>
+                    <li class="dropdown">
+                        <a href="#catalogo">Catálogo</a>
+                        <ul class="dropdown-content">
+                            <li><a href="CatalogodeCategorias.html?categoria=Acabados">Acabados</a></li>
+                            <li><a href="CatalogodeCategorias.html?categoria=Construcción">Construcción</a></li>
+                            <li><a href="CatalogodeCategorias.html?categoria=Hogar">Hogar</a></li>
+                            <li><a href="CatalogodeCategorias.html?categoria=Herramientas">Herramientas</a></li>
+                        </ul>
+                    </li>
                     <li><a href="#nosotros">Nosotros</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                     <li><a href="#login">Iniciar Sesión</a></li>
+                    
                 </ul>
             </nav>
         </div>
@@ -41,22 +51,22 @@
                 <div class="product-grid">
                     <div class="product-item">
                         <img src="img/herramientas.jpg" alt="Herramientas">
-                        <h3>Herramientas</h3>
+                        <h3><a href="CatalogodeCategorias.html?categoria=Herramientas">Herramientas</a></h3>
                         <p>Amplia gama de herramientas para todas sus necesidades.</p>
                     </div>
                     <div class="product-item">
                         <img src="img/construccion.jpg" alt="Materiales de Construcción">
-                        <h3>Materiales de Construcción</h3>
+                        <h3><a href="CatalogodeCategorias.html?categoria=Construcción">Construcción</a></h3>
                         <p>Materiales de alta calidad para sus proyectos de construcción.</p>
                     </div>
                     <div class="product-item">
                         <img src="img/acabados.jpg" alt="Acabados">
-                        <h3>Acabados</h3>
+                        <h3><a href="CatalogodeCategorias.html?categoria=Acabados">Acabados</a></h3>
                         <p>Acabados decorativos y funcionales para su hogar.</p>
                     </div>
                     <div class="product-item">
                         <img src="img/hogar.jpg" alt="Productos para el Hogar">
-                        <h3>Productos para el Hogar</h3>
+                        <h3><a href="CatalogodeCategorias.html?categoria=Hogar">Hogar</a></h3>
                         <p>Todo lo que necesita para el mantenimiento de su hogar.</p>
                     </div>
                 </div>
@@ -109,6 +119,9 @@
             <p>&copy; 2024 FerreExpress. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <script src="CatalogodeCategorias.js"></script>
+
 </body>
 
 </html>
