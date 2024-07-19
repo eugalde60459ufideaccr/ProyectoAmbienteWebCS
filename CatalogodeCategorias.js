@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('categoria-title').textContent = 'Catálogo de ' + categoria;
 
     // Llamada AJAX para obtener productos de la base de datos
-    fetch('ObtenerCategriadelCatalogo.php?categoria=' + categoria)
+    fetch('ObtenerCategoriadelCatalogo.php?categoria=' + categoria)
         .then(response => response.json())
         .then(data => {
             let catalogoDiv = document.getElementById('catalogo');
