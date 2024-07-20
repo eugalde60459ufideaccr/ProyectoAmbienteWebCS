@@ -76,11 +76,13 @@ a:hover {
 
 /* Header Styles */
 header {
-    background: #333;
+    background: url('img/fondo.jpg') no-repeat center center;
+    background-size: cover;
+    background-position: center bottom;
     color: #fff;
     padding-top: 30px;
     min-height: 70px;
-    border-bottom: #0779e4 3px solid;
+    border-bottom: #0779e4 1px solid;
 }
 
 header a {
@@ -319,13 +321,22 @@ nav ul li ul.dropdown-content li a:hover {
 nav ul {
     list-style: none;
     display: flex;
-    justify-content: space-between; 
-    padding: 0;
+    justify-content: space-around; 
+    align-items: center;
+    padding: 10px;
+    flex-wrap: nowrap;
     margin: 0;
 }
 
 nav ul li {
     margin: 0 10px; 
+    list-style: none;
+    display: flex;
+    justify-content: space-around; 
+    align-items: center;
+    padding: 10px;
+    flex-wrap: nowrap;
+    margin: 0;
 }
 
 nav ul li a {
@@ -341,3 +352,105 @@ nav ul li a:hover {
     background-color: darkgray; 
 }
 
+/* Carrito */
+.cart {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1200px; 
+}
+
+.cart h2 {
+    margin-top: 0;
+    font-size: 28px;
+}
+
+.cart p {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.cart-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.cart-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    width: calc(50% - 10px);
+    box-sizing: border-box;
+}
+
+.cart-item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.cart-item h3 {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.cart-item p {
+    font-size: 16px;
+}
+
+/* Proveedores */
+.providers {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.providers h2 {
+    margin-top: 0;
+    font-size: 28px;
+}
+
+.providers p {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.provider-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.provider-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    width: calc(50% - 10px);
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.provider-item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.provider-item h3 {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.provider-item p {
+    font-size: 16px;
+}
