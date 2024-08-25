@@ -1,15 +1,15 @@
+<?php include('includes/header.php'); ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Categorías - Ferre Express</title>
+    <title>FerreExpress</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-
     <header>
         <div class="container">
             <div class="logo">
@@ -40,12 +40,11 @@
     </header>
 
     <main>
-        <section id="catalogo" class="products">
+        <section id="inicio" class="hero">
             <div class="container">
-                <h2 id="categoria-title">Categoría</h2>
-                <div id="product-grid" class="product-grid">
-                    <!-- Aquí se cargarán los productos de la categoría -->
-                </div>
+                <h2>Bienvenidos a FerreExpress</h2>
+                <p>Su ferretería de confianza en Buenos Aires de Puntarenas, Costa Rica.</p>
+                <a href="#productos" class="btn">Ver Productos</a>
             </div>
         </section>
 
@@ -80,9 +79,7 @@
         <section id="nosotros" class="about">
             <div class="container">
                 <h2>Sobre Nosotros</h2>
-                <p>FerreExpress es una ferretería dedicada a ofrecer productos de alta calidad y un excelente servicio
-                    al cliente. Ubicados en Buenos Aires de Puntarenas, Costa Rica, hemos sido el pilar de la comunidad
-                    local por más de 20 años.</p>
+                <p>FerreExpress es una ferretería dedicada a ofrecer productos de alta calidad y un excelente servicio al cliente. Ubicados en Buenos Aires de Puntarenas, Costa Rica, hemos sido el pilar de la comunidad local por más de 20 años.</p>
             </div>
         </section>
 
@@ -131,3 +128,4 @@
 </body>
 
 </html>
+<?php include('includes/footer.php'); ?>

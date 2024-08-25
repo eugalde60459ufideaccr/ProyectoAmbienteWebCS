@@ -1,9 +1,10 @@
+<?php include('includes/header.php'); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito - FerreExpress</title>
+    <title>Proveedores - FerreExpress</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -36,21 +37,21 @@
     </header>
 
     <main>
-        <section id="cart" class="cart">
+        <section id="providers" class="providers">
             <div class="container">
-                <h2>Carrito de Compras</h2>
-                <p>Aquí puedes revisar los productos que has agregado a tu carrito.</p>
-                <!-- Ejemplos, solo para demostrar el uso del front-end por el momento. -->
-                <div class="cart-items">
-                    <div class="cart-item">
-                        <img src="img/taladro-carrito.webp" alt="Herramienta" style="width: 500px; height: auto;">
-                        <h3>Taladro</h3>
-                        <p>Precio: ₡20,000</p>
+                <h2>Nuestros Proveedores</h2>
+                <p>Trabajamos con una variedad de proveedores para ofrecer los mejores productos.</p>
+                <!-- Solo ejemplos por ahora -->
+                <div class="provider-list">
+                    <div class="provider-item">
+                        <h3>Grupo Husqvarna</h3>
+                        <img src="img/Proveedor 1 - Husqvarna.jfif" alt="Proveedor" style="width: 500px; height: auto;">
+                        <p>Especializados en herramientas de alta calidad.</p>
                     </div>
-                    <div class="cart-item">
-                        <img src="img/cemento-carrito.webp" alt="Material de Construcción" style="width: 500px; height: auto;">
-                        <h3>Cemento</h3>
-                        <p>Precio: ₡5,000</p>
+                    <div class="provider-item">
+                        <h3>Qubradores del Sur S.A.</h3>
+                        <img src="img/Proveedor 2 - Quebradores del Sur.jfif" alt="Proveedor" style="width: 500px; height: auto;">
+                        <p>Ofrecen materiales de construcción de primera clase.</p>
                     </div>
                 </div>
             </div>
@@ -64,3 +65,4 @@
     </footer>
 </body>
 </html>
+<?php include('includes/footer.php'); ?>
