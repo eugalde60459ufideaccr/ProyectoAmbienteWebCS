@@ -1,11 +1,12 @@
 <?php include('includes/header.php'); ?>
 <?php include('../Model/conexionModel.php');
-      include('../Model/proveedorModel.php');
-      include('../Controller/proveedorController.php')
-      include('./detallesProveedor.php');
+include('../Model/proveedorModel.php');
+include('../Controller/proveedorController.php');
+include('./detallesProveedor.php');
 
 // Función para obtener proveedor por ID
-function obtenerProveedorPorId($id) {
+function obtenerProveedorPorId($id)
+{
     global $conexion;
     $resultado = $conexion->query("SELECT * FROM proveedores WHERE id = $id");
     return $resultado->fetch_assoc();
@@ -42,9 +43,11 @@ if (isset($_GET['id'])) {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Proveedores</title>
 </head>
+
 <body>
     <h1>Proveedores</h1>
     <form method="POST" action="proveedores.php">
@@ -60,15 +63,15 @@ if (isset($_GET['id'])) {
             <th>Acciones</th>
         </tr>
         <?php while ($row = $proveedores->fetch_assoc()): ?>
-        <tr>
-            <td><?php echo $row['nombre']; ?></td>
-            <td><?php echo $row['contacto']; ?></td>
-            <td>
-                <a href="proveedores.php?edit=<?php echo $row['id']; ?>">Editar</a>
-                <a href="proveedores.php?delete=<?php echo $row['id']; ?>">Eliminar</a>
-                <a href="proveedores.php?id=<?php echo $row['id']; ?>">Detalles</a>
-            </td>
-        </tr>
+            <tr>
+                <td><?php echo $row['nombre']; ?></td>
+                <td><?php echo $row['contacto']; ?></td>
+                <td>
+                    <a href="proveedores.php?edit=<?php echo $row['id']; ?>">Editar</a>
+                    <a href="proveedores.php?delete=<?php echo $row['id']; ?>">Eliminar</a>
+                    <a href="proveedores.php?id=<?php echo $row['id']; ?>">Detalles</a>
+                </td>
+            </tr>
         <?php endwhile; ?>
     </table>
 
@@ -78,5 +81,6 @@ if (isset($_GET['id'])) {
         <p>Contacto: <?php echo $proveedor['contacto']; ?></p>
     <?php endif; ?>
 </body>
+
 </html>
 <?php include('includes/footer.php'); ?>
