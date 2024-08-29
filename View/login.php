@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de sesión</title>
-    <style>
-       
-    </style>
+    <title>Inicio de Sesión</title>
 </head>
 <body>
-    <div class="register-container">
-        <h1>Inicio de sesión</h1>
-        <form>
-            <input type="text" placeholder="Nombre de usuario" required>
-            <input type="email" placeholder="Correo electrónico" required>
-            <input type="password" placeholder="Contraseña" required>
-            <button type="submit">Registrar</button>
-        </form>
-    </div>
+    <h2>Inicio de Sesión</h2>
+    <form>
+        
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+        
+        <label for="email">Correo electrónico:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="contrasena">Contraseña:</label><br>
+        <input type="password" id="contrasena" name="contrasena" required><br><br>
+        
+        <button type="submit">Iniciar sesión</button>
+    </form>
 </body>
 </html>
-
