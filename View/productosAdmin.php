@@ -21,8 +21,8 @@ if ($conn) {
 // Función para obtener producto por ID
 function obtenerProductoPorId($id)
 {
-    global $conexion;
-    $resultado = $conexion->query("SELECT * FROM productos WHERE id = $id");
+    global $conn;
+    $resultado = $conn->query("SELECT * FROM productos WHERE id = $id");
     return $resultado->fetch(PDO::FETCH_ASSOC);
 }
 
