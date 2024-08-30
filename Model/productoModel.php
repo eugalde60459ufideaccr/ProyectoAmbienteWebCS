@@ -7,7 +7,7 @@ class ProductoModel
 
     public function crearProducto($nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor)
     {
-        $sql = "INSERT INTO productos (Nombre, Descripcion, Precio, Stock, ID_Categoria, ID_Proveedor)
+        $sql = "INSERT INTO producto (Nombre, Descripcion, Precio, Stock, ID_Categoria, ID_Proveedor)
 VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexionModel->prepare($sql);
         $stmt->bind_param("ssdiis", $nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor);
@@ -16,14 +16,14 @@ VALUES (?, ?, ?, ?, ?, ?)";
 
     public function obtenerProductos()
     {
-        $sql = "SELECT * FROM productos";
+        $sql = "SELECT * FROM producto";
         $result = $this->conexionModel->query($sql);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function obtenerProductoPorId($id_producto)
     {
-        $sql = "SELECT * FROM productos WHERE ID_Producto = ?";
+        $sql = "SELECT * FROM producto WHERE ID_Producto = ?";
         $stmt = $this->conexionModel->prepare($sql);
         $stmt->bind_param("i", $id_producto);
         $stmt->execute();
@@ -32,7 +32,7 @@ VALUES (?, ?, ?, ?, ?, ?)";
 
     public function actualizarProducto($id_producto, $nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor)
     {
-        $sql = "UPDATE productos SET Nombre = ?, Descripcion = ?, Precio = ?, Stock = ?, ID_Categoria = ?, ID_Proveedor = ?
+        $sql = "UPDATE producto SET Nombre = ?, Descripcion = ?, Precio = ?, Stock = ?, ID_Categoria = ?, ID_Proveedor = ?
 WHERE ID_Producto = ?";
         $stmt = $this->conexionModel->prepare($sql);
         $stmt->bind_param("ssdiisi", $nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor, $id_producto);
@@ -41,7 +41,7 @@ WHERE ID_Producto = ?";
 
     public function eliminarProducto($id_producto)
     {
-        $sql = "DELETE FROM productos WHERE ID_Producto = ?";
+        $sql = "DELETE FROM producto WHERE ID_Producto = ?";
         $stmt = $this->conexionModel->prepare($sql);
         $stmt->bind_param("i", $id_producto);
         return $stmt->execute();

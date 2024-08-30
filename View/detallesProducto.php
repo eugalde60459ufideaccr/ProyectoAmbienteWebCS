@@ -1,5 +1,6 @@
 <?php include('includes/header.php'); ?>
-<?php include('../Model/conexionModel.php');
+<?php
+include('../Model/conexionModel.php');
 include('../Model/productoModel.php');
 include('../Controller/productoController.php');
 
@@ -24,12 +25,12 @@ $producto = obtenerProductoPorId($id);
         <p>Stock: <?php echo $producto['stock']; ?></p>
         <p>ID Categoría: <?php echo $producto['id_categoria']; ?></p>
         <p>ID Proveedor: <?php echo $producto['id_proveedor']; ?></p>
-        <a href="productos.php?edit=<?php echo $producto['id']; ?>">Editar</a>
-        <a href="productos.php?delete=<?php echo $producto['id']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
     <?php else: ?>
         <p>Producto no encontrado.</p>
     <?php endif; ?>
     <a href="productos.php">Volver</a>
+
+    <?php include 'includes/footer.php'; ?>
 </body>
 
 </html>
