@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,14 +24,16 @@
     <!-- Custom Stylesheet -->
     <link href=".../assets/css/styles.css" rel="stylesheet">
 </head>
+
 <body>
-    <!-- Spinner -->
+    <!--Spinner
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Cargando...</span>
         </div>
-    </div>
+    </div>-->
     <!-- Header, Navigation, and Main Content follows -->
+</body>
 
 <body>
     <header>
@@ -51,4 +54,4 @@
             </nav>
         </div>
     </header>
-    <main>
+</body>
