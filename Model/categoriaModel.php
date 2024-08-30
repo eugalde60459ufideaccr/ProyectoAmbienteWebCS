@@ -1,5 +1,5 @@
 <?php
-require_once '../Model/Conexion.php'; // Asegúrate de que esta ruta sea correcta
+require_once('conexionModel.php');
 
 class CategoriaModel
 {
