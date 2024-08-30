@@ -2,87 +2,48 @@
 
 class ProductoModel
 {
-    private $ID_Producto;
-    private $Nombre;
-    private $Descripcion;
-    private $Precio;
-    private $Stock;
-    private $ID_Categoria;
-    private $ID_Proveedor;
+    private $conexionModel;
 
-    public function __construct($ID_Producto, $Nombre, $Descripcion, $Precio, $Stock, $ID_Categoria, $ID_Proveedor)
+
+    public function crearProducto($nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor)
     {
-        $this->ID_Producto = $ID_Producto;
-        $this->Nombre = $Nombre;
-        $this->Descripcion = $Descripcion;
-        $this->Precio = $Precio;
-        $this->Stock = $Stock;
-        $this->ID_Categoria = $ID_Categoria;
-        $this->ID_Proveedor = $ID_Proveedor;
+        $sql = "INSERT INTO productos (Nombre, Descripcion, Precio, Stock, ID_Categoria, ID_Proveedor)
+VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conexionModel->prepare($sql);
+        $stmt->bind_param("ssdiis", $nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor);
+        return $stmt->execute();
     }
 
-    public function getID_Producto()
+    public function obtenerProductos()
     {
-        return $this->ID_Producto;
+        $sql = "SELECT * FROM productos";
+        $result = $this->conexionModel->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getNombre()
+    public function obtenerProductoPorId($id_producto)
     {
-        return $this->Nombre;
+        $sql = "SELECT * FROM productos WHERE ID_Producto = ?";
+        $stmt = $this->conexionModel->prepare($sql);
+        $stmt->bind_param("i", $id_producto);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
     }
 
-    public function getDescripcion()
+    public function actualizarProducto($id_producto, $nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor)
     {
-        return $this->Descripcion;
+        $sql = "UPDATE productos SET Nombre = ?, Descripcion = ?, Precio = ?, Stock = ?, ID_Categoria = ?, ID_Proveedor = ?
+WHERE ID_Producto = ?";
+        $stmt = $this->conexionModel->prepare($sql);
+        $stmt->bind_param("ssdiisi", $nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor, $id_producto);
+        return $stmt->execute();
     }
 
-    public function getPrecio()
+    public function eliminarProducto($id_producto)
     {
-        return $this->Precio;
-    }
-
-    public function getStock()
-    {
-        return $this->Stock;
-    }
-
-    public function getID_Categoria()
-    {
-        return $this->ID_Categoria;
-    }
-
-    public function getID_Proveedor()
-    {
-        return $this->ID_Proveedor;
-    }
-
-    public function setNombre($Nombre)
-    {
-        $this->Nombre = $Nombre;
-    }
-
-    public function setDescripcion($Descripcion)
-    {
-        $this->Descripcion = $Descripcion;
-    }
-
-    public function setPrecio($Precio)
-    {
-        $this->Precio = $Precio;
-    }
-
-    public function setStock($Stock)
-    {
-        $this->Stock = $Stock;
-    }
-
-    public function setID_Categoria($ID_Categoria)
-    {
-        $this->ID_Categoria = $ID_Categoria;
-    }
-
-    public function setID_Proveedor($ID_Proveedor)
-    {
-        $this->ID_Proveedor = $ID_Proveedor;
+        $sql = "DELETE FROM productos WHERE ID_Producto = ?";
+        $stmt = $this->conexionModel->prepare($sql);
+        $stmt->bind_param("i", $id_producto);
+        return $stmt->execute();
     }
 }

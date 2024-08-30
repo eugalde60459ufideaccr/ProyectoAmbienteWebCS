@@ -2,39 +2,46 @@
 
 class ProveedorModel
 {
-    private $id;
-    private $nombre;
-    private $contacto;
-
-    public function __construct($id, $nombre, $contacto)
+    private $conexionModel;
+    public function crearProveedor($nombre, $contacto)
     {
-        $this->id = $id;
-        $this->nombre = $nombre;
-        $this->contacto = $contacto;
+        $sql = "INSERT INTO proveedores (Nombre, Contacto) 
+                VALUES (?, ?)";
+        $stmt = $this->conexionModel->prepare($sql);
+        $stmt->bind_param("ss", $nombre, $contacto);
+        return $stmt->execute();
     }
 
-    public function getId()
+    public function obtenerProveedores()
     {
-        return $this->id;
+        $sql = "SELECT * FROM proveedores";
+        $result = $this->conexionModel->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getNombre()
+    public function obtenerProveedorPorId($id_proveedor)
     {
-        return $this->nombre;
+        $sql = "SELECT * FROM proveedores WHERE ID_Proveedor = ?";
+        $stmt = $this->conexionModel->prepare($sql);
+        $stmt->bind_param("i", $id_proveedor);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
     }
 
-    public function getContacto()
+    public function actualizarProveedor($id_proveedor, $nombre, $contacto)
     {
-        return $this->contacto;
+        $sql = "UPDATE proveedores SET Nombre = ?, Contacto = ? 
+                WHERE ID_Proveedor = ?";
+        $stmt = $this->conexionModel->prepare($sql);
+        $stmt->bind_param("ssi", $nombre, $contacto, $id_proveedor);
+        return $stmt->execute();
     }
 
-    public function setNombre($nombre)
+    public function eliminarProveedor($id_proveedor)
     {
-        $this->nombre = $nombre;
-    }
-
-    public function setContacto($contacto)
-    {
-        $this->contacto = $contacto;
+        $sql = "DELETE FROM proveedores WHERE ID_Proveedor = ?";
+        $stmt = $this->conexionModel->prepare($sql);
+        $stmt->bind_param("i", $id_proveedor);
+        return $stmt->execute();
     }
 }
