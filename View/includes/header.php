@@ -24,34 +24,27 @@
     <!-- Custom Stylesheet -->
     <link href=".../assets/css/styles.css" rel="stylesheet">
 </head>
-
 <body>
-    <!--Spinner
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Cargando...</span>
-        </div>
-    </div>-->
-    <!-- Header, Navigation, and Main Content follows -->
-</body>
-
-<body>
+    <!-- Navigation Bar Start -->
     <header>
-        <div class="container">
-            <div class="logo">
-                <h1><a href="../View/index.php" class="logo-link">FerreExpress</a></h1>
+        <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+            <a href="../View/index.php" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+                <h2 class="m-0 text-primary">FerreExpress</h2>
+            </a>
+            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto p-4 p-lg-0">
+                    <a href="../View/index.php" class="nav-item nav-link">Inicio</a>
+                    <a href="../View/productos.php" class="nav-item nav-link">Productos</a>
+                    <a href="../View/facturas.php" class="nav-item nav-link">Facturas</a>
+                    <a href="../View/ordenes.php" class="nav-item nav-link">Órdenes</a>
+                    <a href="../View/proveedores.php" class="nav-item nav-link">Proveedores</a>
+                    <a href="../View/usuarios.php" class="nav-item nav-link">Usuarios</a>
+                    <a href="../View/contacto.php" class="nav-item nav-link">Contacto</a>
+                </div>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="../View/index.php">Inicio</a></li>
-                    <li><a href="../View/productos.php">Productos</a></li>
-                    <li><a href="../View/facturas.php">Facturas</a></li>
-                    <li><a href="../View/ordenes.php">Órdenes</a></li>
-                    <li><a href="../View/proveedores.php">Proveedores</a></li>
-                    <li><a href="../View/usuarios.php">Usuarios</a></li>
-                    <li><a href="../View/contacto.php">Contacto</a></li>
-                </ul>
-            </nav>
-        </div>
+        </nav>
     </header>
 </body>
