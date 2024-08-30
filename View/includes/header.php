@@ -24,7 +24,6 @@
     <!-- Custom Stylesheet -->
     <link href=".../assets/css/styles.css" rel="stylesheet">
 </head>
-
 <body>
     <!-- Navigation Bar Start -->
     <header>
@@ -48,5 +47,4 @@
             </div>
         </nav>
     </header>
-    <main>
-<body>
+</body>
