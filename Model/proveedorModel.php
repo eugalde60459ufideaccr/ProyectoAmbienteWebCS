@@ -41,7 +41,7 @@ class ProveedorModel
     public function obtenerProveedorPorId($id_proveedor)
     {
         try {
-            $sql = "SELECT * FROM proveedores WHERE ID_Proveedor = ?";
+            $sql = "SELECT * FROM proveedor WHERE ID_Proveedor = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute($id_proveedor);
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -54,7 +54,7 @@ class ProveedorModel
     public function actualizarProveedor($id_proveedor, $nombre, $contacto)
     {
         try {
-            $sql = "UPDATE proveedores SET Nombre = ?, Contacto = ? 
+            $sql = "UPDATE proveedor SET Nombre = ?, Contacto = ? 
                 WHERE ID_Proveedor = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute($nombre, $contacto, $id_proveedor);
@@ -68,7 +68,7 @@ class ProveedorModel
     public function eliminarProveedor($id_proveedor)
     {
         try {
-            $sql = "DELETE FROM proveedores WHERE ID_Proveedor = ?";
+            $sql = "DELETE FROM proveedor WHERE ID_Proveedor = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute($id_proveedor);
             return $stmt->execute();
