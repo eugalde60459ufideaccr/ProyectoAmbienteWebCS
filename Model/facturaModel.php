@@ -2,18 +2,21 @@
 // Requerir el modelo de conexión para interactuar con la base de datos
 require_once('conexionModel.php');
 
-class FacturaModel {
+class FacturaModel
+{
     private $conn;
 
     // Constructor para establecer la conexión a la base de datos
-    public function __construct() {
+    public function __construct()
+    {
         $this->conn = (new Conexion())->getConn();
     }
 
     // Método para crear una nueva factura
-    public function crearFactura($fecha, $total, $id_usuario) {
+    public function crearFactura($fecha, $total, $id_usuario)
+    {
         try {
-            $sql = "INSERT INTO Factura (Fecha, Total, ID_Usuario) VALUES (?, ?, ?)";
+            $sql = "INSERT INTO factura (Fecha, Total, ID_Usuario) VALUES (?, ?, ?)";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([$fecha, $total, $id_usuario]);
             return $this->conn->lastInsertId(); // Retornar el ID de la última factura insertada
@@ -24,9 +27,10 @@ class FacturaModel {
     }
 
     // Método para obtener todas las facturas
-    public function obtenerFacturas() {
+    public function obtenerFacturas()
+    {
         try {
-            $sql = "SELECT * FROM Factura";
+            $sql = "SELECT * FROM factura";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -37,9 +41,10 @@ class FacturaModel {
     }
 
     // Método para obtener una factura específica por su ID
-    public function obtenerFacturaPorId($id_factura) {
+    public function obtenerFacturaPorId($id_factura)
+    {
         try {
-            $sql = "SELECT * FROM Factura WHERE ID_Factura = ?";
+            $sql = "SELECT * FROM factura WHERE ID_Factura = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([$id_factura]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -50,9 +55,10 @@ class FacturaModel {
     }
 
     // Método para actualizar una factura
-    public function actualizarFactura($id_factura, $fecha, $total, $id_usuario) {
+    public function actualizarFactura($id_factura, $fecha, $total, $id_usuario)
+    {
         try {
-            $sql = "UPDATE Factura SET Fecha = ?, Total = ?, ID_Usuario = ? WHERE ID_Factura = ?";
+            $sql = "UPDATE factura SET Fecha = ?, Total = ?, ID_Usuario = ? WHERE ID_Factura = ?";
             $stmt = $this->conn->prepare($sql);
             return $stmt->execute([$fecha, $total, $id_usuario, $id_factura]);
         } catch (PDOException $e) {
@@ -62,9 +68,10 @@ class FacturaModel {
     }
 
     // Método para eliminar una factura
-    public function eliminarFactura($id_factura) {
+    public function eliminarFactura($id_factura)
+    {
         try {
-            $sql = "DELETE FROM Factura WHERE ID_Factura = ?";
+            $sql = "DELETE FROM factura WHERE ID_Factura = ?";
             $stmt = $this->conn->prepare($sql);
             return $stmt->execute([$id_factura]);
         } catch (PDOException $e) {

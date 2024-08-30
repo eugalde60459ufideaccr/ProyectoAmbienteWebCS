@@ -1,9 +1,9 @@
 <?php
 // Requerir el modelo de proveedor para interactuar con el base de datos
 require_once('../Model/proveedorModel.php');
-
 class ProveedorController
 {
+
     private $proveedorModel;
 
     // Constructor para inicializar el modelo de proveedor
@@ -11,6 +11,7 @@ class ProveedorController
     {
         $this->proveedorModel = new ProveedorModel();
     }
+
 
     // Método para manejar la creación de un nuevo proveedor
     public function crearProveedor($ID_Proveedor, $Nombre, $Contacto)
@@ -24,7 +25,7 @@ class ProveedorController
     }
 
     // Método para obtener todos los proveedores
-    public function obtenerProveedores()
+    public function verProveedores()
     {
         return $this->proveedorModel->obtenerProveedores();
     }

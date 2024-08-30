@@ -5,7 +5,7 @@ require_once '../Controller/proveedorController.php';
 $proveedorController = new ProveedorController();
 
 // Obtener todos los proveedores usando la instancia del controlador
-$proveedores = $proveedorController->obtenerProveedores();
+$proveedores = $proveedorController->verProveedores();
 ?>
 
 <!DOCTYPE html>

@@ -1,47 +1,80 @@
 <?php
+// Requerir el modelo de conexión para interactuar con la base de datos
+require_once('conexionModel.php');
 
 class ProveedorModel
 {
-    private $conexionModel;
+    private $conn;
+
+    // Constructor para establecer la conexión a la base de datos
+    public function __construct()
+    {
+        $this->conn = (new Conexion())->getConn();
+    }
     public function crearProveedor($nombre, $contacto)
     {
-        $sql = "INSERT INTO proveedores (Nombre, Contacto) 
+        try {
+            $sql = "INSERT INTO proveedor (Nombre, Contacto) 
                 VALUES (?, ?)";
-        $stmt = $this->conexionModel->prepare($sql);
-        $stmt->bind_param("ss", $nombre, $contacto);
-        return $stmt->execute();
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$nombre, $contacto]);
+            return $this->conn->lastInsertId(); // Retornar el ID de la última factura insertada
+        } catch (PDOException $e) {
+            echo "Error al crear factura: " . $e->getMessage();
+            return false;
+        }
     }
 
     public function obtenerProveedores()
     {
-        $sql = "SELECT * FROM proveedores";
-        $result = $this->conexionModel->query($sql);
-        return $result->fetch_all(MYSQLI_ASSOC);
+        try {
+            $sql = "SELECT * FROM proveedor";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error al obtener proveedores: " . $e->getMessage();
+            return false;
+        }
     }
 
     public function obtenerProveedorPorId($id_proveedor)
     {
-        $sql = "SELECT * FROM proveedores WHERE ID_Proveedor = ?";
-        $stmt = $this->conexionModel->prepare($sql);
-        $stmt->bind_param("i", $id_proveedor);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        try {
+            $sql = "SELECT * FROM proveedores WHERE ID_Proveedor = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute($id_proveedor);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error al obtener el proveedor: " . $e->getMessage();
+            return false;
+        }
     }
 
     public function actualizarProveedor($id_proveedor, $nombre, $contacto)
     {
-        $sql = "UPDATE proveedores SET Nombre = ?, Contacto = ? 
+        try {
+            $sql = "UPDATE proveedores SET Nombre = ?, Contacto = ? 
                 WHERE ID_Proveedor = ?";
-        $stmt = $this->conexionModel->prepare($sql);
-        $stmt->bind_param("ssi", $nombre, $contacto, $id_proveedor);
-        return $stmt->execute();
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute($nombre, $contacto, $id_proveedor);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Error al actualizar el proveedor: " . $e->getMessage();
+            return false;
+        }
     }
 
     public function eliminarProveedor($id_proveedor)
     {
-        $sql = "DELETE FROM proveedores WHERE ID_Proveedor = ?";
-        $stmt = $this->conexionModel->prepare($sql);
-        $stmt->bind_param("i", $id_proveedor);
-        return $stmt->execute();
+        try {
+            $sql = "DELETE FROM proveedores WHERE ID_Proveedor = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute($id_proveedor);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Error al eliminar el proveedor: " . $e->getMessage();
+            return false;
+        }
     }
 }
