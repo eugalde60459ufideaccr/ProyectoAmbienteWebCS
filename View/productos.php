@@ -3,67 +3,109 @@
 require_once('../Model/conexionModel.php');
 require_once('../Model/productoModel.php');
 require_once('../Controller/productoController.php');
-//include('./detallesProducto.php');
+
 // Obtener la conexión a través de la clase Conexion
 $conn = (new Conexion())->getConn();
 
 // Obtener lista de productos
 $stmt = $conn->query("SELECT * FROM producto");
 $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Obtener producto específico si se solicita
-$producto = null;
-if (isset($_GET['id'])) {
-    $stmt = $conn->prepare("SELECT * FROM producto WHERE ID_Producto = :id");
-    $stmt->execute(['id' => $_GET['id']]);
-    $producto = $stmt->fetch(PDO::FETCH_ASSOC);
-}
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
     <title>Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #8B0000;
+            /* Mismo color que el logo "FerreExpress" */
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .product-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-item h3 {
+            margin: 15px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .product-item p {
+            margin: 10px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .product-item .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #8B0000;
+            /* Mismo color que el logo "FerreExpress" */
+            margin: 10px 0;
+        }
+
+        .product-item .btn {
+            display: inline-block;
+            margin: 10px 5px;
+            padding: 10px 20px;
+            background-color: #FF6347;
+            /* Botón rojo */
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .product-item .btn:hover {
+            background-color: #CD5C5C;
+            /* Un tono más oscuro para el hover */
+        }
+    </style>
 </head>
 
 <body>
     <h1>Productos</h1>
-    <table>
-        <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>ID Categoría</th>
-            <th>ID Proveedor</th>
-            <th>Acciones</th>
-        </tr>
+    <div class="product-grid">
         <?php foreach ($productos as $row): ?>
-            <tr>
-                <td><?php echo $row['Nombre']; ?></td>
-                <td><?php echo $row['Descripcion']; ?></td>
-                <td><?php echo $row['Precio']; ?></td>
-                <td><?php echo $row['Stock']; ?></td>
-                <td><?php echo $row['ID_Categoria']; ?></td>
-                <td><?php echo $row['ID_Proveedor']; ?></td>
-                <td>
-                    <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>">Ver Detalles</a>
-                </td>
-            </tr>
+            <div class="product-item">
+                <img src="ruta/a/imagen_del_producto.jpg" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="detallesProducto.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
         <?php endforeach; ?>
-    </table>
+    </div>
 
-    <?php if ($producto): ?>
-        <h2>Detalles del Producto</h2>
-        <p>Nombre: <?php echo $producto['Nombre']; ?></p>
-        <p>Descripción: <?php echo $producto['Descripcion']; ?></p>
-        <p>Precio: <?php echo $producto['Precio']; ?></p>
-        <p>Stock: <?php echo $producto['Stock']; ?></p>
-        <p>ID Categoría: <?php echo $producto['ID_Categoria']; ?></p>
-        <p>ID Proveedor: <?php echo $producto['ID_Proveedor']; ?></p>
-    <?php endif; ?>
+    <?php include('includes/footer.php'); ?>
 </body>
 
 </html>
-<?php include('includes/footer.php'); ?>
