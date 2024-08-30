@@ -1,51 +1,63 @@
 <?php
-// Establecer la conexión a la base de datos
-$host = 'localhost';
-$dbname = 'ferreexpress';
-$user = 'root';
-$password = '';
+require_once '../Model/Conexion.php'; // Asegúrate de que esta ruta sea correcta
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Error de conexión: " . $e->getMessage());
-}
+class CategoriaModel
+{
+    private $conexion;
 
-// Función para obtener todas las categorías
-function obtenerCategorias() {
-    global $pdo;
-    $query = "SELECT DISTINCT categoria FROM productos";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_COLUMN);
-}
+    public function __construct()
+    {
+        // Crear una instancia de la clase Conexion
+        $conexionObj = new Conexion();
+        $this->conexion = $conexionObj->getConn(); // Obtener la conexión PDO
+    }
 
-// Función para agregar una nueva categoría
-function agregarCategoria($nueva_categoria) {
-    global $pdo;
-    $query = "INSERT INTO productos (categoria) VALUES (:categoria)";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':categoria', $nueva_categoria, PDO::PARAM_STR);
-    $stmt->execute();
-}
+    // Obtener todas las categorías
+    public function getAllCategories()
+    {
+        $query = "SELECT * FROM categorias";
+        $stmt = $this->conexion->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-// Función para editar una categoría existente
-function editarCategoria($categoria_antigua, $categoria_nueva) {
-    global $pdo;
-    $query = "UPDATE productos SET categoria = :categoria_nueva WHERE categoria = :categoria_antigua";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':categoria_nueva', $categoria_nueva, PDO::PARAM_STR);
-    $stmt->bindParam(':categoria_antigua', $categoria_antigua, PDO::PARAM_STR);
-    $stmt->execute();
-}
+    // Obtener una categoría por ID
+    public function getCategoryById($id)
+    {
+        $query = "SELECT * FROM categorias WHERE ID_Categoria = :id";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
-// Función para eliminar una categoría
-function eliminarCategoria($categoria) {
-    global $pdo;
-    $query = "DELETE FROM productos WHERE categoria = :categoria";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':categoria', $categoria, PDO::PARAM_STR);
-    $stmt->execute();
+    // Crear una nueva categoría
+    public function createCategory($nombre, $descripcion)
+    {
+        $query = "INSERT INTO categorias (Nombre, Descripcion) VALUES (:nombre, :descripcion)";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':descripcion', $descripcion);
+        return $stmt->execute();
+    }
+
+    // Actualizar una categoría existente
+    public function updateCategory($id, $nombre, $descripcion)
+    {
+        $query = "UPDATE categorias SET Nombre = :nombre, Descripcion = :descripcion WHERE ID_Categoria = :id";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':descripcion', $descripcion);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    // Eliminar una categoría
+    public function deleteCategory($id)
+    {
+        $query = "DELETE FROM categorias WHERE ID_Categoria = :id";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
 ?>

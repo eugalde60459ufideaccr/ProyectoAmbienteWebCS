@@ -1,22 +1,43 @@
 <?php
-include('categoriaModel.php');
+require_once '../Model/categoriaModel.php';
 
-$accion = isset($_GET['accion']) ? $_GET['accion'] : '';
-$categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
-$nueva_categoria = isset($_POST['nueva_categoria']) ? $_POST['nueva_categoria'] : '';
+class CategoriaController
+{
+    private $categoriaModel;
 
-// Manejo de acciones
-if ($accion === 'eliminar') {
-    eliminarCategoria($categoria);
-} elseif ($accion === 'agregar') {
-    agregarCategoria($nueva_categoria);
-} elseif ($accion === 'editar') {
-    $categoria_nueva = isset($_POST['categoria_nueva']) ? $_POST['categoria_nueva'] : '';
-    editarCategoria($categoria, $categoria_nueva);
+    public function __construct()
+    {
+        $this->categoriaModel = new CategoriaModel();
+    }
+
+    // Obtener todas las categorías
+    public function obtenerCategorias()
+    {
+        return $this->categoriaModel->getAllCategories();
+    }
+
+    // Obtener una categoría por ID
+    public function obtenerCategoriaPorId($id)
+    {
+        return $this->categoriaModel->getCategoryById($id);
+    }
+
+    // Crear una nueva categoría
+    public function crearCategoria($nombre, $descripcion)
+    {
+        return $this->categoriaModel->createCategory($nombre, $descripcion);
+    }
+
+    // Actualizar una categoría existente
+    public function actualizarCategoria($id, $nombre, $descripcion)
+    {
+        return $this->categoriaModel->updateCategory($id, $nombre, $descripcion);
+    }
+
+    // Eliminar una categoría
+    public function eliminarCategoria($id)
+    {
+        return $this->categoriaModel->deleteCategory($id);
+    }
 }
-
-// Obtener todas las categorías
-$categorias = obtenerCategorias();
-
-include('categoriaView.php');
 ?>
