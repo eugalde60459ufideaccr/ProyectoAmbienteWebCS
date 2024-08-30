@@ -12,7 +12,8 @@ $facturas = $facturaController->verFacturas();
 <html lang="es">
 
 <head>
-    <?php include 'includes/header.php'; ?>
+    <?php include 'includes/header.php';
+    ?>
 </head>
 
 <body>
