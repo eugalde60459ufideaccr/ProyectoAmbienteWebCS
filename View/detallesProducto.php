@@ -1,4 +1,4 @@
-<?php include('includes/header.php'); ?>
+<?php /*include('includes/header.php'); ?>
 <?php
 include('../Model/conexionModel.php');
 include('../Model/productoModel.php');
@@ -33,4 +33,4 @@ $producto = obtenerProductoPorId($id);
     <?php include 'includes/footer.php'; ?>
 </body>
 
-</html>
+</html> */

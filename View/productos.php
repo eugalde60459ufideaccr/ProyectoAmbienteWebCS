@@ -1,25 +1,22 @@
 <?php include('includes/header.php'); ?>
 <?php
-include('../Model/conexionModel.php');
-include('../Model/productoModel.php');
-include('../Controller/productoController.php');
-include('./detallesProducto.php');
-
-// Función para obtener producto por ID
-function obtenerProductoPorId($id)
-{
-    global $conexion;
-    $resultado = $conexion->query("SELECT * FROM producto WHERE id = $id");
-    return $resultado->fetch_assoc();
-}
+require_once('../Model/conexionModel.php');
+require_once('../Model/productoModel.php');
+require_once('../Controller/productoController.php');
+//include('./detallesProducto.php');
+// Obtener la conexión a través de la clase Conexion
+$conn = (new Conexion())->getConn();
 
 // Obtener lista de productos
-$productos = $conexion->query("SELECT * FROM producto");
+$stmt = $conn->query("SELECT * FROM producto");
+$productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Obtener producto específico si se solicita
 $producto = null;
 if (isset($_GET['id'])) {
-    $producto = obtenerProductoPorId($_GET['id']);
+    $stmt = $conn->prepare("SELECT * FROM producto WHERE ID_Producto = :id");
+    $stmt->execute(['id' => $_GET['id']]);
+    $producto = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 ?>
 
@@ -42,29 +39,29 @@ if (isset($_GET['id'])) {
             <th>ID Proveedor</th>
             <th>Acciones</th>
         </tr>
-        <?php while ($row = $productos->fetch_assoc()): ?>
+        <?php foreach ($productos as $row): ?>
             <tr>
-                <td><?php echo $row['nombre']; ?></td>
-                <td><?php echo $row['descripcion']; ?></td>
-                <td><?php echo $row['precio']; ?></td>
-                <td><?php echo $row['stock']; ?></td>
-                <td><?php echo $row['id_categoria']; ?></td>
-                <td><?php echo $row['id_proveedor']; ?></td>
+                <td><?php echo $row['Nombre']; ?></td>
+                <td><?php echo $row['Descripcion']; ?></td>
+                <td><?php echo $row['Precio']; ?></td>
+                <td><?php echo $row['Stock']; ?></td>
+                <td><?php echo $row['ID_Categoria']; ?></td>
+                <td><?php echo $row['ID_Proveedor']; ?></td>
                 <td>
-                    <a href="productos.php?id=<?php echo $row['id']; ?>">Ver Detalles</a>
+                    <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>">Ver Detalles</a>
                 </td>
             </tr>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </table>
 
     <?php if ($producto): ?>
         <h2>Detalles del Producto</h2>
-        <p>Nombre: <?php echo $producto['nombre']; ?></p>
-        <p>Descripción: <?php echo $producto['descripcion']; ?></p>
-        <p>Precio: <?php echo $producto['precio']; ?></p>
-        <p>Stock: <?php echo $producto['stock']; ?></p>
-        <p>ID Categoría: <?php echo $producto['id_categoria']; ?></p>
-        <p>ID Proveedor: <?php echo $producto['id_proveedor']; ?></p>
+        <p>Nombre: <?php echo $producto['Nombre']; ?></p>
+        <p>Descripción: <?php echo $producto['Descripcion']; ?></p>
+        <p>Precio: <?php echo $producto['Precio']; ?></p>
+        <p>Stock: <?php echo $producto['Stock']; ?></p>
+        <p>ID Categoría: <?php echo $producto['ID_Categoria']; ?></p>
+        <p>ID Proveedor: <?php echo $producto['ID_Proveedor']; ?></p>
     <?php endif; ?>
 </body>
 
