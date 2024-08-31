@@ -1,17 +1,55 @@
 <?php
-include('categoriaModel.php');
+require_once '../Model/categoriaModel.php';
 
-$categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
+class CategoriaController
+{
+    private $categoriaModel;
 
-// Validar la categoría
-$categoriasValidas = ['Acabados', 'Construcción', 'Hogar', 'Herramientas'];
-if (!in_array($categoria, $categoriasValidas)) {
-    die("Categoría no válida");
+    public function __construct($db)
+    {
+        $this->categoriaModel = new CategoriaModel($db);
+    }
+
+    public function crearCategoria($data)
+    {
+        $nombre = htmlspecialchars(strip_tags($data['nombre']));
+        $descripcion = htmlspecialchars(strip_tags($data['descripcion']));
+        
+        if (empty($nombre)) {
+            return json_encode(['error' => 'El nombre de la categoría es requerido.']);
+        }
+        
+        $result = $this->categoriaModel->insertarCategoria($nombre, $descripcion);
+        return json_encode(['message' => $result ? 'Categoría creada exitosamente.' : 'Error al crear la categoría.']);
+    }
+
+    public function obtenerCategorias()
+    {
+        return json_encode($this->categoriaModel->obtenerCategorias());
+    }
+
+    public function obtenerCategoria($id)
+    {
+        return json_encode($this->categoriaModel->obtenerCategoria($id));
+    }
+
+    public function actualizarCategoria($id, $data)
+    {
+        $nombre = htmlspecialchars(strip_tags($data['nombre']));
+        $descripcion = htmlspecialchars(strip_tags($data['descripcion']));
+        
+        if (empty($nombre)) {
+            return json_encode(['error' => 'El nombre de la categoría es requerido.']);
+        }
+        
+        $result = $this->categoriaModel->actualizarCategoria($id, $nombre, $descripcion);
+        return json_encode(['message' => $result ? 'Categoría actualizada exitosamente.' : 'Error al actualizar la categoría.']);
+    }
+
+    public function eliminarCategoria($id)
+    {
+        $result = $this->categoriaModel->eliminarCategoria($id);
+        return json_encode(['message' => $result ? 'Categoría eliminada exitosamente.' : 'Error al eliminar la categoría.']);
+    }
 }
-
-// Obtener productos de la categoría
-$productos = obtenerProductosPorCategoria($categoria);
-
-// Incluir la vista
-include('categoriaView.php');
 ?>

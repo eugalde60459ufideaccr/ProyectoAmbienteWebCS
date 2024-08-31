@@ -1,24 +1,55 @@
 <?php
-// Establecer la conexión a la base de datos
-$host = 'localhost';
-$dbname = 'ferreexpress';
-$user = 'root';
-$password = '';
+class CategoriaModel
+{
+    private $conn;
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Error de conexión: " . $e->getMessage());
-}
+    public function __construct($db)
+    {
+        $this->conn = $db;
+    }
 
-// Función para obtener productos por categoría
-function obtenerProductosPorCategoria($categoria) {
-    global $pdo;
-    $query = "SELECT * FROM productos WHERE categoria = :categoria";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':categoria', $categoria, PDO::PARAM_STR);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function insertarCategoria($nombre, $descripcion)
+    {
+        $query = "INSERT INTO categorias (nombre, descripcion) VALUES (?, ?)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $nombre);
+        $stmt->bindParam(2, $descripcion);
+        return $stmt->execute();
+    }
+
+    public function obtenerCategorias()
+    {
+        $query = "SELECT * FROM categorias";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenerCategoria($id)
+    {
+        $query = "SELECT * FROM categorias WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function actualizarCategoria($id, $nombre, $descripcion)
+    {
+        $query = "UPDATE categorias SET nombre = ?, descripcion = ? WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $nombre);
+        $stmt->bindParam(2, $descripcion);
+        $stmt->bindParam(3, $id);
+        return $stmt->execute();
+    }
+
+    public function eliminarCategoria($id)
+    {
+        $query = "DELETE FROM categorias WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $id);
+        return $stmt->execute();
+    }
 }
 ?>
