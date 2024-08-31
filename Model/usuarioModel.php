@@ -1,5 +1,4 @@
 <?php
-
 class Usuario {
     private $conn;
     private $table_name = "usuario"; 
@@ -18,11 +17,8 @@ class Usuario {
     // Método para crear un nuevo usuario
     public function crear() {
         $query = "INSERT INTO " . $this->table_name . " 
-                  SET Nombre = :Nombre, 
-                      Apellido = :Apellido, 
-                      Email = :Email, 
-                      Contrasena = :Contrasena, 
-                      Rol = :Rol";
+                  (Nombre, Apellido, Email, Contrasena, Rol) 
+                  VALUES (:Nombre, :Apellido, :Email, :Contrasena, :Rol)";
 
         $stmt = $this->conn->prepare($query);
 
@@ -41,7 +37,7 @@ class Usuario {
         $stmt->bindParam(':Rol', $this->Rol);
 
         if ($stmt->execute()) {
-            return true;
+            return $this->conn->lastInsertId();
         }
 
         return false;
@@ -50,21 +46,17 @@ class Usuario {
     // Método para obtener todos los usuarios
     public function leerTodos() {
         $query = "SELECT * FROM " . $this->table_name;
-
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-
         return $stmt;
     }
 
     // Método para obtener un usuario por ID
-    public function leerPorID() {
-        $query = "SELECT * FROM " . $this->table_name . " WHERE ID_Usuario = ? LIMIT 0,1";
-
+    public function leerPorID($id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE ID_Usuario = :ID_Usuario LIMIT 0,1";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(1, $this->ID_Usuario);
+        $stmt->bindParam(':ID_Usuario', $id);
         $stmt->execute();
-
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
@@ -104,27 +96,15 @@ class Usuario {
         $stmt->bindParam(':Rol', $this->Rol);
         $stmt->bindParam(':ID_Usuario', $this->ID_Usuario);
 
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
+        return $stmt->execute();
     }
 
     // Método para eliminar un usuario
     public function eliminar() {
         $query = "DELETE FROM " . $this->table_name . " WHERE ID_Usuario = :ID_Usuario";
-
         $stmt = $this->conn->prepare($query);
-
         $this->ID_Usuario = htmlspecialchars(strip_tags($this->ID_Usuario));
-
         $stmt->bindParam(':ID_Usuario', $this->ID_Usuario);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
+        return $stmt->execute();
     }
 }

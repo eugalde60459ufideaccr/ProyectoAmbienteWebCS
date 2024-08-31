@@ -12,11 +12,12 @@ class UsuarioController {
         $this->usuario->Nombre = $data['Nombre'];
         $this->usuario->Apellido = $data['Apellido'];
         $this->usuario->Email = $data['Email'];
-        $this->usuario->Contrasena = password_hash($data['Contrasena'], PASSWORD_BCRYPT); // Hashear la contraseña
+        $this->usuario->Contrasena = password_hash($data['Contrasena'], PASSWORD_BCRYPT);
         $this->usuario->Rol = $data['Rol'];
 
-        if($this->usuario->crear()) {
-            return json_encode(["message" => "Usuario creado exitosamente."]);
+        $nuevoId = $this->usuario->crear();
+        if ($nuevoId) {
+            return json_encode(["message" => "Usuario creado exitosamente.", "ID_Usuario" => $nuevoId]);
         } else {
             return json_encode(["message" => "Error al crear el usuario."]);
         }
@@ -25,16 +26,12 @@ class UsuarioController {
     // Leer todos los usuarios
     public function leerUsuarios() {
         $stmt = $this->usuario->leerTodos();
-        $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return json_encode($usuarios);
+        return json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     // Leer un usuario por ID
     public function leerUsuarioPorID($id) {
-        $this->usuario->ID_Usuario = $id;
-        $this->usuario->leerPorID();
-
+        $this->usuario->leerPorID($id);
         if ($this->usuario->Nombre != null) {
             $usuario_arr = [
                 "ID_Usuario" => $this->usuario->ID_Usuario,
@@ -43,7 +40,6 @@ class UsuarioController {
                 "Email" => $this->usuario->Email,
                 "Rol" => $this->usuario->Rol
             ];
-
             return json_encode($usuario_arr);
         } else {
             return json_encode(["message" => "Usuario no encontrado."]);
@@ -69,7 +65,6 @@ class UsuarioController {
     // Eliminar un usuario
     public function eliminarUsuario($id) {
         $this->usuario->ID_Usuario = $id;
-
         if($this->usuario->eliminar()) {
             return json_encode(["message" => "Usuario eliminado exitosamente."]);
         } else {
