@@ -3,6 +3,8 @@ require_once('../Controller/productoController.php');
 
 $productoController = new ProductoController();
 $productos = $productoController->verProductos();
+$categorias = $productoController->obtenerCategorias();
+$proveedores = $productoController->obtenerProveedores();
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,6 +26,7 @@ $productos = $productoController->verProductos();
                     <th>Stock</th>
                     <th>ID Categoría</th>
                     <th>ID Proveedor</th>
+                    <th>Imagen</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -38,15 +41,16 @@ $productos = $productoController->verProductos();
                             <td><?php echo $producto['Stock']; ?></td>
                             <td><?php echo $producto['ID_Categoria']; ?></td>
                             <td><?php echo $producto['ID_Proveedor']; ?></td>
+                            <td><img src="../<?php echo $producto['Imagen']; ?>" alt="<?php echo $producto['Nombre']; ?>" width="100"></td>
                             <td>
-                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarProductoModal" data-id="<?php echo $producto['ID_Producto']; ?>" data-nombre="<?php echo $producto['Nombre']; ?>" data-descripcion="<?php echo $producto['Descripcion']; ?>" data-precio="<?php echo $producto['Precio']; ?>" data-stock="<?php echo $producto['Stock']; ?>" data-id_categoria="<?php echo $producto['ID_Categoria']; ?>" data-id_proveedor="<?php echo $producto['ID_Proveedor']; ?>">Editar</button>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarProductoModal" data-id="<?php echo $producto['ID_Producto']; ?>" data-nombre="<?php echo $producto['Nombre']; ?>" data-descripcion="<?php echo $producto['Descripcion']; ?>" data-precio="<?php echo $producto['Precio']; ?>" data-stock="<?php echo $producto['Stock']; ?>" data-id_categoria="<?php echo $producto['ID_Categoria']; ?>" data-id_proveedor="<?php echo $producto['ID_Proveedor']; ?>" data-imagen="<?php echo $producto['Imagen']; ?>">Editar</button>
                                 <a href="../Controller/productoController.php?action=eliminar&id_producto=<?php echo $producto['ID_Producto']; ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="8" class="text-center">No hay productos disponibles</td>
+                        <td colspan="9" class="text-center">No hay productos disponibles</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -66,7 +70,7 @@ $productos = $productoController->verProductos();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="../Controller/productoController.php?action=crear" method="post">
+                    <form action="../Controller/productoController.php?action=crear" method="post" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" required>
@@ -84,12 +88,26 @@ $productos = $productoController->verProductos();
                             <input type="number" class="form-control" id="stock" name="stock" required>
                         </div>
                         <div class="mb-3">
-                            <label for="id_categoria" class="form-label">ID Categoria</label>
-                            <input type="number" class="form-control" id="id_categoria" name="id_categoria" required>
+                            <label for="id_categoria" class="form-label">Categoría</label>
+                            <select class="form-control" id="id_categoria" name="id_categoria" required>
+                                <option value="">Seleccione una categoría</option>
+                                <?php foreach ($categorias as $categoria): ?>
+                                    <option value="<?php echo $categoria['ID_Categoria']; ?>"><?php echo $categoria['Nombre']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="id_proveedor" class="form-label">ID Proveedor</label>
-                            <input type="number" class="form-control" id="id_proveedor" name="id_proveedor" required>
+                            <label for="id_proveedor" class="form-label">Proveedor</label>
+                            <select class="form-control" id="id_proveedor" name="id_proveedor" required>
+                                <option value="">Seleccione un proveedor</option>
+                                <?php foreach ($proveedores as $proveedor): ?>
+                                    <option value="<?php echo $proveedor['ID_Proveedor']; ?>"><?php echo $proveedor['Nombre']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagen" class="form-label">Imagen</label>
+                            <input type="file" class="form-control" id="imagen" name="imagen">
                         </div>
                         <button type="submit" class="btn btn-primary">Crear Producto</button>
                     </form>
@@ -97,6 +115,7 @@ $productos = $productoController->verProductos();
             </div>
         </div>
     </div>
+
 
     <!-- Modal para Editar Producto -->
     <div class="modal fade" id="editarProductoModal" tabindex="-1" aria-labelledby="editarProductoModalLabel" aria-hidden="true">
@@ -107,7 +126,7 @@ $productos = $productoController->verProductos();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="../Controller/productoController.php?action=actualizar" method="post">
+                    <form action="../Controller/productoController.php?action=actualizar" method="post" enctype="multipart/form-data">
                         <input type="hidden" id="id_producto" name="id_producto">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
@@ -126,12 +145,28 @@ $productos = $productoController->verProductos();
                             <input type="number" class="form-control" id="stock" name="stock" required>
                         </div>
                         <div class="mb-3">
-                            <label for="id_categoria" class="form-label">ID Categoria</label>
-                            <input type="number" class="form-control" id="id_categoria" name="id_categoria" required>
+                            <label for="id_categoria" class="form-label">Categoría</label>
+                            <select class="form-control" id="editar_id_categoria" name="id_categoria" required>
+                                <?php foreach ($categorias as $categoria): ?>
+                                    <option value="<?php echo $categoria['ID_Categoria']; ?>"><?php echo $categoria['Nombre']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="id_proveedor" class="form-label">ID Proveedor</label>
-                            <input type="number" class="form-control" id="id_proveedor" name="id_proveedor" required>
+                            <label for="id_proveedor" class="form-label">Proveedor</label>
+                            <select class="form-control" id="editar_id_proveedor" name="id_proveedor" required>
+                                <?php foreach ($proveedores as $proveedor): ?>
+                                    <option value="<?php echo $proveedor['ID_Proveedor']; ?>"><?php echo $proveedor['Nombre']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagen" class="form-label">Imagen Actual</label>
+                            <img id="imagen_preview" src="" alt="Imagen Actual" width="100">
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagen" class="form-label">Cambiar Imagen</label>
+                            <input type="file" class="form-control" id="imagen" name="imagen">
                         </div>
                         <button type="submit" class="btn btn-primary">Actualizar Producto</button>
                     </form>
@@ -152,6 +187,7 @@ $productos = $productoController->verProductos();
             var stock = button.getAttribute('data-stock')
             var id_categoria = button.getAttribute('data-id_categoria')
             var id_proveedor = button.getAttribute('data-id_proveedor')
+            var imagen = button.getAttribute('data-imagen')
 
             var modalTitle = editarProductoModal.querySelector('.modal-title')
             var idInput = editarProductoModal.querySelector('#id_producto')
@@ -159,8 +195,9 @@ $productos = $productoController->verProductos();
             var descripcionInput = editarProductoModal.querySelector('#descripcion')
             var precioInput = editarProductoModal.querySelector('#precio')
             var stockInput = editarProductoModal.querySelector('#stock')
-            var categoriaInput = editarProductoModal.querySelector('#id_categoria')
-            var proveedorInput = editarProductoModal.querySelector('#id_proveedor')
+            var categoriaInput = editarProductoModal.querySelector('#editar_id_categoria')
+            var proveedorInput = editarProductoModal.querySelector('#editar_id_proveedor')
+            var imagenPreview = editarProductoModal.querySelector('#imagen_preview')
 
             modalTitle.textContent = 'Editar Producto ID ' + id
             idInput.value = id
@@ -170,6 +207,7 @@ $productos = $productoController->verProductos();
             stockInput.value = stock
             categoriaInput.value = id_categoria
             proveedorInput.value = id_proveedor
+            imagenPreview.src = '../' + imagen // Set the current image path to preview
         })
     </script>
 

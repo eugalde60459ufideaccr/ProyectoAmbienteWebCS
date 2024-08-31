@@ -10,13 +10,13 @@ class ProductoModel
         $this->conn = (new Conexion())->getConn();
     }
 
-    public function crearProducto($nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor)
+    public function crearProducto($nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor, $imagen)
     {
         try {
-            $sql = "INSERT INTO producto (Nombre, Descripcion, Precio, Stock, ID_Categoria, ID_Proveedor) VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO producto (Nombre, Descripcion, Precio, Stock, ID_Categoria, ID_Proveedor, Imagen) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute([$nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor]);
-            return $this->conn->lastInsertId(); // Retornar el ID de la última producto insertado
+            $stmt->execute([$nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor, $imagen]);
+            return $this->conn->lastInsertId(); 
         } catch (PDOException $e) {
             echo "Error al crear producto: " . $e->getMessage();
             return false;
@@ -49,12 +49,12 @@ class ProductoModel
         }
     }
 
-    public function actualizarProducto($id_producto, $nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor)
+    public function actualizarProducto($id_producto, $nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor, $imagen)
     {
         try {
-            $sql = "UPDATE producto SET Nombre = ?, Descripcion = ?, Precio = ?, Stock = ?, ID_Categoria = ?, ID_Proveedor = ? WHERE ID_Producto = ?";
+            $sql = "UPDATE producto SET Nombre = ?, Descripcion = ?, Precio = ?, Stock = ?, ID_Categoria = ?, ID_Proveedor = ?, Imagen = ? WHERE ID_Producto = ?";
             $stmt = $this->conn->prepare($sql);
-            return $stmt->execute([$nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor, $id_producto]);
+            return $stmt->execute([$nombre, $descripcion, $precio, $stock, $id_categoria, $id_proveedor, $imagen, $id_producto]);
         } catch (PDOException $e) {
             echo "Error al actualizar el producto: " . $e->getMessage();
             return false;
@@ -69,6 +69,33 @@ class ProductoModel
             return $stmt->execute([$id_producto]);
         } catch (PDOException $e) {
             echo "Error al eliminar el producto: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    // New methods to fetch Categorias and Proveedores
+    public function obtenerCategorias()
+    {
+        try {
+            $sql = "SELECT ID_Categoria, Nombre FROM categoria";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error al obtener categorias: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function obtenerProveedores()
+    {
+        try {
+            $sql = "SELECT ID_Proveedor, Nombre FROM proveedor";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error al obtener proveedores: " . $e->getMessage();
             return false;
         }
     }
