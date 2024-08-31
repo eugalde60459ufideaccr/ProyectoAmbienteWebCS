@@ -1,45 +1,45 @@
 <?php
 require_once('../Model/proveedorModel.php');
-require_once('../Model/conexionModel.php');
 
-class ProveedorController {
+class ProveedorController
+{
     private $proveedorModel;
 
-    public function __construct() {
-        $conn = new Conexion();
-        $dbConnection = $conn->getConn();
-        $this->proveedorModel = new ProveedorModel($dbConnection);
+    public function __construct()
+    {
+        $this->proveedorModel = new ProveedorModel();
     }
 
-    public function crearProveedor($Nombre, $Contacto) {
-        $nuevoId = $this->proveedorModel->crearProveedor($Nombre, $Contacto);
-        if ($nuevoId) {
+    // Método para manejar la creación de un nuevo proveedor
+    public function crearProveedor($nombre, $contacto)
+    {
+        if ($this->proveedorModel->crearProveedor($nombre, $contacto)) {
             header("Location: ../View/proveedores.php");
         } else {
             echo "Error al crear el proveedor.";
         }
     }
 
-    public function verProveedores() {
+    // Método para obtener todos los proveedores
+    public function verProveedores()
+    {
         return $this->proveedorModel->obtenerProveedores();
     }
 
-    public function verProveedor($ID_Proveedor) {
-        return $this->proveedorModel->obtenerProveedorPorId($ID_Proveedor);
-    }
-
-    public function actualizarProveedor($ID_Proveedor, $Nombre, $Contacto) {
-        $resultado = $this->proveedorModel->actualizarProveedor($ID_Proveedor, $Nombre, $Contacto);
-        if ($resultado) {
+    // Método para actualizar un proveedor
+    public function actualizarProveedor($id, $nombre, $contacto)
+    {
+        if ($this->proveedorModel->actualizarProveedor($id, $nombre, $contacto)) {
             header("Location: ../View/proveedores.php");
         } else {
             echo "Error al actualizar el proveedor.";
         }
     }
 
-    public function eliminarProveedor($ID_Proveedor) {
-        $resultado = $this->proveedorModel->eliminarProveedor($ID_Proveedor);
-        if ($resultado) {
+    // Método para eliminar un proveedor
+    public function eliminarProveedor($id)
+    {
+        if ($this->proveedorModel->eliminarProveedor($id)) {
             header("Location: ../View/proveedores.php");
         } else {
             echo "Error al eliminar el proveedor.";
@@ -53,18 +53,18 @@ if (isset($_GET['action'])) {
 
     switch ($_GET['action']) {
         case 'crear':
-            if (isset($_POST['Nombre'], $_POST['Contacto'])) {
-                $proveedorController->crearProveedor($_POST['Nombre'], $_POST['Contacto']);
+            if (isset($_POST['nombre'], $_POST['contacto'])) {
+                $proveedorController->crearProveedor($_POST['nombre'], $_POST['contacto']);
             }
             break;
         case 'actualizar':
-            if (isset($_POST['ID_Proveedor'], $_POST['Nombre'], $_POST['Contacto'])) {
-                $proveedorController->actualizarProveedor($_POST['ID_Proveedor'], $_POST['Nombre'], $_POST['Contacto']);
+            if (isset($_POST['id_proveedor'], $_POST['nombre'], $_POST['contacto'])) {
+                $proveedorController->actualizarProveedor($_POST['id_proveedor'], $_POST['nombre'], $_POST['contacto']);
             }
             break;
         case 'eliminar':
-            if (isset($_GET['ID_Proveedor'])) {
-                $proveedorController->eliminarProveedor($_GET['ID_Proveedor']);
+            if (isset($_GET['id'])) {
+                $proveedorController->eliminarProveedor($_GET['id']);
             }
             break;
         default:

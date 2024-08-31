@@ -1,53 +1,71 @@
 <?php
+require_once('conexionModel.php');
 
-class ProveedorModel {
-    private $conn;
+class ProveedorModel
+{
+    private $pdo;
 
-    // Constructor para inicializar la conexión a la base de datos
-    public function __construct($conn) {
-        $this->conn = $conn;
+    public function __construct()
+    {
+        $this->pdo = (new Conexion())->getConn();
     }
 
-    // Método para crear un nuevo proveedor
-    public function crearProveedor($nombre, $contacto) {
-        $stmt = $this->conn->prepare("INSERT INTO proveedor (Nombre, Contacto) VALUES (?, ?)");
-        $stmt->bindParam(1, $nombre);
-        $stmt->bindParam(2, $contacto);
-        if ($stmt->execute()) {
-            return $this->conn->lastInsertId(); // Retorna el ID del proveedor insertado
-        } else {
+    // Función para obtener todos los proveedores
+    public function obtenerProveedores()
+    {
+        try {
+            $query = "SELECT * FROM proveedor";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error al obtener proveedores: " . $e->getMessage();
             return false;
         }
     }
 
-    // Método para obtener todos los proveedores
-    public function obtenerProveedores() {
-        $stmt = $this->conn->prepare("SELECT * FROM proveedor");
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Función para crear un nuevo proveedor
+    public function crearProveedor($nombre, $contacto)
+    {
+        try {
+            $query = "INSERT INTO proveedor (Nombre, Contacto) VALUES (:nombre, :contacto)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
+            $stmt->bindParam(':contacto', $contacto, PDO::PARAM_STR);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Error al crear proveedor: " . $e->getMessage();
+            return false;
+        }
     }
 
-    // Método para obtener un proveedor específico por su ID
-    public function obtenerProveedorPorId($id_proveedor) {
-        $stmt = $this->conn->prepare("SELECT * FROM proveedor WHERE ID_Proveedor = ?");
-        $stmt->bindParam(1, $id_proveedor);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    // Función para actualizar un proveedor
+    public function actualizarProveedor($id, $nombre, $contacto)
+    {
+        try {
+            $query = "UPDATE proveedor SET Nombre = :nombre, Contacto = :contacto WHERE ID_Proveedor = :id";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
+            $stmt->bindParam(':contacto', $contacto, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Error al actualizar proveedor: " . $e->getMessage();
+            return false;
+        }
     }
 
-    // Método para actualizar un proveedor
-    public function actualizarProveedor($id_proveedor, $nombre, $contacto) {
-        $stmt = $this->conn->prepare("UPDATE proveedor SET Nombre = ?, Contacto = ? WHERE ID_Proveedor = ?");
-        $stmt->bindParam(1, $nombre);
-        $stmt->bindParam(2, $contacto);
-        $stmt->bindParam(3, $id_proveedor);
-        return $stmt->execute();
-    }
-
-    // Método para eliminar un proveedor
-    public function eliminarProveedor($id_proveedor) {
-        $stmt = $this->conn->prepare("DELETE FROM proveedor WHERE ID_Proveedor = ?");
-        $stmt->bindParam(1, $id_proveedor);
-        return $stmt->execute();
+    // Función para eliminar un proveedor
+    public function eliminarProveedor($id)
+    {
+        try {
+            $query = "DELETE FROM proveedor WHERE ID_Proveedor = :id";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Error al eliminar proveedor: " . $e->getMessage();
+            return false;
+        }
     }
 }
