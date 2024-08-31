@@ -1,4 +1,3 @@
-<?php include('includes/header.php'); ?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -24,53 +23,79 @@
 
     <!-- Custom Stylesheet -->
     <link href="../assets/css/styles.css" rel="stylesheet">
-    <!-- Custom CSS for Index Page -->
+
+    <!-- Custom Inline Styles for Index Page -->
     <style>
         header {
             background: url('../assets/img/fondo.jpg') no-repeat center center;
             background-size: cover;
-            color: #fff;
             padding: 10px 0;
             width: 100%;
-            min-height: 100px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo h1 {
-            color: white;
-            font-size: 24px;
-            margin-left: 20px;
-            background-color: transparent;
+        .navbar {
+            background-color: transparent !important;
         }
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            margin-right: 20px;
-            padding: 0;
+        .navbar-brand {
+            color: transparent !important;
+            font-size: 1.75rem;
+            font-weight: bold;
         }
 
-        nav ul li {
-            margin: 0 10px;
+        .h2 {
+            color:aliceblue
         }
 
-        nav ul li a {
-            text-decoration: none;
-            color: white;
-            background-color: transparent;
+        .navbar-nav .nav-link {
+            color: white !important;
+            background-color: transparent !important;
             padding: 10px 20px;
             border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
-            border: 1px solid white; /* Add border to keep alignment */
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        nav ul li a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            color: white !important;
+        }
+
+        .navbar-toggler {
+            border-color: white;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
         }
     </style>
 </head>
+
+<body>
+    <!-- Navigation Bar Start -->
+    <header>
+        <nav class="navbar navbar-expand-lg shadow sticky-top p-0">
+            <a href="../View/index.php" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+                <h2 class="m-0">FerreExpress</h2>
+            </a>
+            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto p-4 p-lg-0">
+                    <a href="../View/index.php" class="nav-item nav-link">Inicio</a>
+                    <a href="../View/productos.php" class="nav-item nav-link">Productos</a>
+                    <a href="../View/facturas.php" class="nav-item nav-link">Facturas</a>
+                    <a href="../View/ordenes.php" class="nav-item nav-link">Órdenes</a>
+                    <a href="../View/proveedores.php" class="nav-item nav-link">Proveedores</a>
+                    <a href="../View/usuarios.php" class="nav-item nav-link">Usuarios</a>
+                    <a href="../View/contacto.php" class="nav-item nav-link">Contacto</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
 <body>
     <!-- Hero Section Start -->

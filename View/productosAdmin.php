@@ -1,10 +1,7 @@
 <?php
 require_once('../Controller/productoController.php');
 
-// Crear una instancia del controlador de productos
 $productoController = new ProductoController();
-
-// Obtener todas las productos usando la instancia del controlador
 $productos = $productoController->verProductos();
 ?>
 <!DOCTYPE html>
@@ -20,6 +17,7 @@ $productos = $productoController->verProductos();
         <table class="table table-bordered table-hover">
             <thead class="thead-dark">
                 <tr>
+                    <th>ID Producto</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Precio</th>
@@ -38,17 +36,17 @@ $productos = $productoController->verProductos();
                             <td><?php echo $producto['Descripcion']; ?></td>
                             <td><?php echo $producto['Precio']; ?></td>
                             <td><?php echo $producto['Stock']; ?></td>
-                            <td><?php echo $producto['ID_cATEGORIA']; ?></td>
-                            <td><?php echo $producto['ID_PROVEEDOR']; ?></td>
+                            <td><?php echo $producto['ID_Categoria']; ?></td>
+                            <td><?php echo $producto['ID_Proveedor']; ?></td>
                             <td>
-                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarProductoModal" data-id="<?php echo $producto['ID_Producto']; ?> " nombre="<?php echo $producto['Nombre']; ?>" descripcion="<?php echo $producto['Descripcion']; ?>" precio="<?php echo $producto['Precio']; ?>" stock="<?php echo $producto['Stock']; ?>" id_categoria="<?php echo $producto['ID_Categoria']; ?>" id_proveedor="<?php echo $producto['ID_Proveedor']; ?>">Editar</button>
-                                <a href=" ../Controller/productoController.php?action=eliminar&id=<?php echo $producto['ID_Producto']; ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarProductoModal" data-id="<?php echo $producto['ID_Producto']; ?>" data-nombre="<?php echo $producto['Nombre']; ?>" data-descripcion="<?php echo $producto['Descripcion']; ?>" data-precio="<?php echo $producto['Precio']; ?>" data-stock="<?php echo $producto['Stock']; ?>" data-id_categoria="<?php echo $producto['ID_Categoria']; ?>" data-id_proveedor="<?php echo $producto['ID_Proveedor']; ?>">Editar</button>
+                                <a href="../Controller/productoController.php?action=eliminar&id_producto=<?php echo $producto['ID_Producto']; ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="5" class="text-center">No hay productos disponibles</td>
+                        <td colspan="8" class="text-center">No hay productos disponibles</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -60,7 +58,7 @@ $productos = $productoController->verProductos();
     <?php include('includes/footer.php'); ?>
 
     <!-- Modal para Crear Producto -->
-    <div class="modal fade" id="crearProducto" tabindex="-1" aria-labelledby="crearProductoModalLabel" aria-hidden="true">
+    <div class="modal fade" id="crearProductoModal" tabindex="-1" aria-labelledby="crearProductoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -89,6 +87,10 @@ $productos = $productoController->verProductos();
                             <label for="id_categoria" class="form-label">ID Categoria</label>
                             <input type="number" class="form-control" id="id_categoria" name="id_categoria" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="id_proveedor" class="form-label">ID Proveedor</label>
+                            <input type="number" class="form-control" id="id_proveedor" name="id_proveedor" required>
+                        </div>
                         <button type="submit" class="btn btn-primary">Crear Producto</button>
                     </form>
                 </div>
@@ -106,7 +108,7 @@ $productos = $productoController->verProductos();
                 </div>
                 <div class="modal-body">
                     <form action="../Controller/productoController.php?action=actualizar" method="post">
-                        <input type="hidden" id="id_factura" name="id_factura">
+                        <input type="hidden" id="id_producto" name="id_producto">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" required>
@@ -127,6 +129,10 @@ $productos = $productoController->verProductos();
                             <label for="id_categoria" class="form-label">ID Categoria</label>
                             <input type="number" class="form-control" id="id_categoria" name="id_categoria" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="id_proveedor" class="form-label">ID Proveedor</label>
+                            <input type="number" class="form-control" id="id_proveedor" name="id_proveedor" required>
+                        </div>
                         <button type="submit" class="btn btn-primary">Actualizar Producto</button>
                     </form>
                 </div>
@@ -140,28 +146,32 @@ $productos = $productoController->verProductos();
         editarProductoModal.addEventListener('show.bs.modal', function(event) {
             var button = event.relatedTarget
             var id = button.getAttribute('data-id')
-            var nombre = button.getAttribute('nombre')
-            var precio = button.getAttribute('precio')
-            var stock = button.getAttribute('stock')
-            var categoria = button.getAttribute('categoria')
-            var proveedor = button.getAttribute('proveedor')
+            var nombre = button.getAttribute('data-nombre')
+            var descripcion = button.getAttribute('data-descripcion')
+            var precio = button.getAttribute('data-precio')
+            var stock = button.getAttribute('data-stock')
+            var id_categoria = button.getAttribute('data-id_categoria')
+            var id_proveedor = button.getAttribute('data-id_proveedor')
 
             var modalTitle = editarProductoModal.querySelector('.modal-title')
             var idInput = editarProductoModal.querySelector('#id_producto')
-            var precioInput = editarProductoModal.querySelector('#editar_precio')
-            var stockInput = editarProductoModal.querySelector('#editar_stock')
-            var categoriaInput = editarProductoModal.querySelector('#editar_id_categoria')
-            var proveedorInput = editarProductoModal.querySelector('#editar_id_proveedor')
+            var nombreInput = editarProductoModal.querySelector('#nombre')
+            var descripcionInput = editarProductoModal.querySelector('#descripcion')
+            var precioInput = editarProductoModal.querySelector('#precio')
+            var stockInput = editarProductoModal.querySelector('#stock')
+            var categoriaInput = editarProductoModal.querySelector('#id_categoria')
+            var proveedorInput = editarProductoModal.querySelector('#id_proveedor')
 
             modalTitle.textContent = 'Editar Producto ID ' + id
             idInput.value = id
+            nombreInput.value = nombre
+            descripcionInput.value = descripcion
             precioInput.value = precio
             stockInput.value = stock
-            categoriaInput.value = categoria
-            proveedorInput.value = proveedor
+            categoriaInput.value = id_categoria
+            proveedorInput.value = id_proveedor
         })
     </script>
-
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
