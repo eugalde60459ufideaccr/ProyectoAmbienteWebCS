@@ -1,63 +1,86 @@
-<?php
-require_once '../Controller/proveedorController.php';
+<?php include('includes/header.php'); ?>
+<?php include('../Model/conexionModel.php');
+include('../Model/proveedorModel.php');
+include('../Controller/proveedorController.php');
+include('./detallesProveedor.php');
 
-// Crear una instancia del controlador de proveedores
-$proveedorController = new ProveedorController();
+// Función para obtener proveedor por ID
+function obtenerProveedorPorId($id)
+{
+    global $conexion;
+    $resultado = $conexion->query("SELECT * FROM proveedores WHERE id = $id");
+    return $resultado->fetch_assoc();
+}
 
-// Obtener todos los proveedores usando la instancia del controlador
-$proveedores = $proveedorController->verProveedores();
+// Operaciones CRUD
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Crear o actualizar proveedor
+    $nombre = $_POST['nombre'];
+    $contacto = $_POST['contacto'];
+    if (isset($_POST['id'])) {
+        // Actualizar proveedor
+        $id = $_POST['id'];
+        $conexion->query("UPDATE proveedores SET nombre='$nombre', contacto='$contacto' WHERE id=$id");
+    } else {
+        // Crear nuevo proveedor
+        $conexion->query("INSERT INTO proveedores (nombre, contacto) VALUES ('$nombre', '$contacto')");
+    }
+} elseif (isset($_GET['delete'])) {
+    // Eliminar proveedor
+    $id = $_GET['delete'];
+    $conexion->query("DELETE FROM proveedores WHERE id=$id");
+}
+
+// Obtener lista de proveedores
+$proveedores = $conexion->query("SELECT * FROM proveedores");
+
+// Obtener proveedor específico si se solicita
+$proveedor = null;
+if (isset($_GET['id'])) {
+    $proveedor = obtenerProveedorPorId($_GET['id']);
+}
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html>
 
 <head>
-    <?php include 'includes/header.php'; ?>
+    <title>Proveedores</title>
 </head>
 
 <body>
-    <!-- Comienzo del contenido principal -->
-    <main class="container my-5">
-        <h2 class="text-center mb-4">Gestión de Proveedores</h2>
+    <h1>Proveedores</h1>
+    <form method="POST" action="proveedores.php">
+        <input type="hidden" name="id" value="<?php echo isset($_GET['edit']) ? $_GET['edit'] : ''; ?>">
+        <input type="text" name="nombre" placeholder="Nombre" required>
+        <input type="text" name="contacto" placeholder="Contacto" required>
+        <button type="submit">Guardar</button>
+    </form>
+    <table>
+        <tr>
+            <th>Nombre</th>
+            <th>Contacto</th>
+            <th>Acciones</th>
+        </tr>
+        <?php while ($row = $proveedores->fetch_assoc()): ?>
+            <tr>
+                <td><?php echo $row['nombre']; ?></td>
+                <td><?php echo $row['contacto']; ?></td>
+                <td>
+                    <a href="proveedores.php?edit=<?php echo $row['id']; ?>">Editar</a>
+                    <a href="proveedores.php?delete=<?php echo $row['id']; ?>">Eliminar</a>
+                    <a href="proveedores.php?id=<?php echo $row['id']; ?>">Detalles</a>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    </table>
 
-        <!-- Tabla para mostrar los proveedores -->
-        <table class="table table-bordered table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Contacto</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($proveedores)): ?>
-                    <?php foreach ($proveedores as $proveedor): ?>
-                        <tr>
-                            <td><?php echo $proveedor['ID_Proveedor']; ?></td>
-                            <td><?php echo $proveedor['Nombre']; ?></td>
-                            <td><?php echo $proveedor['Contacto']; ?></td>
-                            <td>
-                                <a href="editarProveedor.php?id=<?php echo $proveedor['ID_Proveedor']; ?>" class="btn btn-warning">Editar</a>
-                                <a href="../Controller/proveedorController.php?action=eliminar&id=<?php echo $proveedor['ID_Proveedor']; ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este proveedor?');">Eliminar</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="4" class="text-center">No hay proveedores disponibles</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-
-        <div class="text-center">
-            <a href="agregarProveedor.php" class="btn btn-primary">Añadir Nuevo Proveedor</a>
-        </div>
-    </main>
-    <!-- Fin del contenido principal -->
-
-    <?php include 'includes/footer.php'; ?>
+    <?php if ($proveedor): ?>
+        <h2>Detalles del Proveedor</h2>
+        <p>Nombre: <?php echo $proveedor['nombre']; ?></p>
+        <p>Contacto: <?php echo $proveedor['contacto']; ?></p>
+    <?php endif; ?>
 </body>
 
 </html>
+<?php include('includes/footer.php'); ?>

@@ -2,19 +2,16 @@
 // Requerir el modelo de factura para interactuar con la base de datos
 require_once('../Model/facturaModel.php');
 
-class FacturaController
-{
+class FacturaController {
     private $facturaModel;
 
     // Constructor para inicializar el modelo de factura
-    public function __construct()
-    {
+    public function __construct() {
         $this->facturaModel = new FacturaModel();
     }
 
     // Método para manejar la creación de una nueva factura
-    public function crearFactura($fecha, $total, $id_usuario)
-    {
+    public function crearFactura($fecha, $total, $id_usuario) {
         $nuevoId = $this->facturaModel->crearFactura($fecha, $total, $id_usuario);
         if ($nuevoId) {
             header("Location: ../View/facturas.php"); // Redirigir a la vista de facturas
@@ -24,20 +21,17 @@ class FacturaController
     }
 
     // Método para obtener todas las facturas
-    public function verFacturas()
-    {
+    public function verFacturas() {
         return $this->facturaModel->obtenerFacturas();
     }
 
     // Método para obtener una factura específica por su ID
-    public function verFactura($id_factura)
-    {
+    public function verFactura($id_factura) {
         return $this->facturaModel->obtenerFacturaPorId($id_factura);
     }
 
     // Método para actualizar una factura
-    public function actualizarFactura($id_factura, $fecha, $total, $id_usuario)
-    {
+    public function actualizarFactura($id_factura, $fecha, $total, $id_usuario) {
         $resultado = $this->facturaModel->actualizarFactura($id_factura, $fecha, $total, $id_usuario);
         if ($resultado) {
             header("Location: ../View/facturas.php"); // Redirigir a la vista de facturas
@@ -47,8 +41,7 @@ class FacturaController
     }
 
     // Método para eliminar una factura
-    public function eliminarFactura($id_factura)
-    {
+    public function eliminarFactura($id_factura) {
         $resultado = $this->facturaModel->eliminarFactura($id_factura);
         if ($resultado) {
             header("Location: ../View/facturas.php"); // Redirigir a la vista de facturas

@@ -1,111 +1,106 @@
 <?php include('includes/header.php'); ?>
-<?php
-require_once('../Model/conexionModel.php');
-require_once('../Model/productoModel.php');
-require_once('../Controller/productoController.php');
+<?php include('../Model/conexionModel.php');
+include('../Model/productoModel.php');
+include('../Controller/productoController.php');
+include('./detallesProducto.php');
 
-// Obtener la conexión a través de la clase Conexion
-$conn = (new Conexion())->getConn();
+// Función para obtener producto por ID
+function obtenerProductoPorId($id)
+{
+    global $conexion;
+    $resultado = $conexion->query("SELECT * FROM productos WHERE id = $id");
+    return $resultado->fetch_assoc();
+}
+
+// Operaciones CRUD
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Crear o actualizar producto
+    $nombre = $_POST['nombre'];
+    $descripcion = $_POST['descripcion'];
+    $precio = $_POST['precio'];
+    $stock = $_POST['stock'];
+    $id_categoria = $_POST['id_categoria'];
+    $id_proveedor = $_POST['id_proveedor'];
+    if (isset($_POST['id'])) {
+        // Actualizar producto
+        $id = $_POST['id'];
+        $conexion->query("UPDATE productos SET nombre='$nombre', descripcion='$descripcion', precio='$precio', stock='$stock', id_categoria='$id_categoria', id_proveedor='$id_proveedor' WHERE id=$id");
+    } else {
+        // Crear nuevo producto
+        $conexion->query("INSERT INTO productos (nombre, descripcion, precio, stock, id_categoria, id_proveedor) VALUES ('$nombre', '$descripcion', '$precio', '$stock', '$id_categoria', '$id_proveedor')");
+    }
+} elseif (isset($_GET['delete'])) {
+    // Eliminar producto
+    $id = $_GET['delete'];
+    $conexion->query("DELETE FROM productos WHERE id=$id");
+}
 
 // Obtener lista de productos
-$stmt = $conn->query("SELECT * FROM producto");
-$productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$productos = $conexion->query("SELECT * FROM productos");
+
+// Obtener producto específico si se solicita
+$producto = null;
+if (isset($_GET['id'])) {
+    $producto = obtenerProductoPorId($_GET['id']);
+}
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html>
 
 <head>
     <title>Productos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-
-        h1 {
-            text-align: center;
-            color: #8B0000;
-            /* Mismo color que el logo "FerreExpress" */
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin: 20px auto;
-            max-width: 1200px;
-        }
-
-        .product-item {
-            border: 1px solid #ddd;
-            padding: 15px;
-            text-align: center;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-item h3 {
-            margin: 15px 0;
-            font-size: 18px;
-            color: #333;
-        }
-
-        .product-item p {
-            margin: 10px 0;
-            font-size: 14px;
-            color: #555;
-        }
-
-        .product-item .price {
-            font-size: 18px;
-            font-weight: bold;
-            color: #8B0000;
-            /* Mismo color que el logo "FerreExpress" */
-            margin: 10px 0;
-        }
-
-        .product-item .btn {
-            display: inline-block;
-            margin: 10px 5px;
-            padding: 10px 20px;
-            background-color: #FF6347;
-            /* Botón rojo */
-            color: #fff;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
-        .product-item .btn:hover {
-            background-color: #CD5C5C;
-            /* Un tono más oscuro para el hover */
-        }
-    </style>
 </head>
 
 <body>
     <h1>Productos</h1>
-    <div class="product-grid">
-        <?php foreach ($productos as $row): ?>
-            <div class="product-item">
-                <img src="ruta/a/imagen_del_producto.jpg" alt="Producto" style="width:100%;">
-                <h3><?php echo $row['Nombre']; ?></h3>
-                <p><?php echo $row['Descripcion']; ?></p>
-                <p class="price">₡<?php echo $row['Precio']; ?></p>
-                <p>
-                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
-                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
-                </p>
-                <a href="detallesProducto.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
-                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
-            </div>
-        <?php endforeach; ?>
-    </div>
+    <form method="POST" action="productos.php">
+        <input type="hidden" name="id" value="<?php echo isset($_GET['edit']) ? $_GET['edit'] : ''; ?>">
+        <input type="text" name="nombre" placeholder="Nombre" required>
+        <input type="text" name="descripcion" placeholder="Descripción" required>
+        <input type="number" name="precio" placeholder="Precio" required>
+        <input type="number" name="stock" placeholder="Stock" required>
+        <input type="number" name="id_categoria" placeholder="ID Categoría" required>
+        <input type="number" name="id_proveedor" placeholder="ID Proveedor" required>
+        <button type="submit">Guardar</button>
+    </form>
+    <table>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>ID Categoría</th>
+            <th>ID Proveedor</th>
+            <th>Acciones</th>
+        </tr>
+        <?php while ($row = $productos->fetch_assoc()): ?>
+            <tr>
+                <td><?php echo $row['nombre']; ?></td>
+                <td><?php echo $row['descripcion']; ?></td>
+                <td><?php echo $row['precio']; ?></td>
+                <td><?php echo $row['stock']; ?></td>
+                <td><?php echo $row['id_categoria']; ?></td>
+                <td><?php echo $row['id_proveedor']; ?></td>
+                <td>
+                    <a href="productos.php?edit=<?php echo $row['id']; ?>">Editar</a>
+                    <a href="productos.php?delete=<?php echo $row['id']; ?>">Eliminar</a>
+                    <a href="productos.php?id=<?php echo $row['id']; ?>">Detalles</a>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    </table>
 
-    <?php include('includes/footer.php'); ?>
+    <?php if ($producto): ?>
+        <h2>Detalles del Producto</h2>
+        <p>Nombre: <?php echo $producto['nombre']; ?></p>
+        <p>Descripción: <?php echo $producto['descripcion']; ?></p>
+        <p>Precio: <?php echo $producto['precio']; ?></p>
+        <p>Stock: <?php echo $producto['stock']; ?></p>
+        <p>ID Categoría: <?php echo $producto['id_categoria']; ?></p>
+        <p>ID Proveedor: <?php echo $producto['id_proveedor']; ?></p>
+    <?php endif; ?>
 </body>
 
 </html>
+<?php include('includes/footer.php'); ?>
