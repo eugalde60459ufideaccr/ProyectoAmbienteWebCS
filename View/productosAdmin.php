@@ -134,7 +134,7 @@ if (isset($_GET['id'])) {
 
     <?php include('includes/footer.php'); ?>
 
-    <!-- Modal para Crear Factura -->
+    <!-- Modal para Crear Producto -->
     <div class="modal fade" id="crearProducto" tabindex="-1" aria-labelledby="crearProductoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -171,7 +171,7 @@ if (isset($_GET['id'])) {
         </div>
     </div>
 
-    <!-- Modal para Editar Factura -->
+    <!-- Modal para Editar Producto -->
     <div class="modal fade" id="editarProductoModal" tabindex="-1" aria-labelledby="editarProductoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
