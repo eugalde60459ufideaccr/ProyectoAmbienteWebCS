@@ -2,7 +2,6 @@
 <?php include('../Model/conexionModel.php');
 include('../Model/proveedorModel.php');
 include('../Controller/proveedorController.php');
-include('./detallesProveedor.php');
 
 // Función para obtener proveedor por ID
 function obtenerProveedorPorId($id)
