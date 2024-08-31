@@ -21,15 +21,14 @@ class AutenticacionController {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row && password_verify($data['Contrasena'], $row['Contrasena'])) {
-            $usuario_arr = [
+            // Store session or token logic here
+            return json_encode([
                 "ID_Usuario" => $row['ID_Usuario'],
                 "Nombre" => $row['Nombre'],
                 "Apellido" => $row['Apellido'],
                 "Email" => $row['Email'],
                 "Rol" => $row['Rol']
-            ];
-
-            return json_encode($usuario_arr);
+            ]);
         } else {
             return json_encode(["message" => "Credenciales incorrectas."]);
         }
@@ -56,19 +55,13 @@ class AutenticacionController {
 
         $stmt = $this->conn->prepare($query);
 
-        $data['Nombre'] = htmlspecialchars(strip_tags($data['Nombre']));
-        $data['Apellido'] = htmlspecialchars(strip_tags($data['Apellido']));
-        $data['Email'] = htmlspecialchars(strip_tags($data['Email']));
-        $data['Contrasena'] = htmlspecialchars(strip_tags($data['Contrasena']));
-        $data['Rol'] = htmlspecialchars(strip_tags($data['Rol']));
-
         $hashed_password = password_hash($data['Contrasena'], PASSWORD_BCRYPT);
 
-        $stmt->bindParam(':Nombre', $data['Nombre']);
-        $stmt->bindParam(':Apellido', $data['Apellido']);
-        $stmt->bindParam(':Email', $data['Email']);
+        $stmt->bindParam(':Nombre', htmlspecialchars(strip_tags($data['Nombre'])));
+        $stmt->bindParam(':Apellido', htmlspecialchars(strip_tags($data['Apellido'])));
+        $stmt->bindParam(':Email', htmlspecialchars(strip_tags($data['Email'])));
         $stmt->bindParam(':Contrasena', $hashed_password);
-        $stmt->bindParam(':Rol', $data['Rol']);
+        $stmt->bindParam(':Rol', htmlspecialchars(strip_tags($data['Rol'])));
 
         if($stmt->execute()) {
             return json_encode(["message" => "Usuario registrado exitosamente."]);
