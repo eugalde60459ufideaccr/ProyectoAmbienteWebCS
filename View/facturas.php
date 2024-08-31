@@ -10,9 +10,12 @@ $facturas = $facturaController->verFacturas();
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <?php include 'includes/header.php'; ?>
+    <?php include 'includes/header.php';
+    ?>
 </head>
+
 <body>
     <!-- Comienzo del contenido principal -->
     <main class="container my-5">
@@ -30,8 +33,8 @@ $facturas = $facturaController->verFacturas();
                 </tr>
             </thead>
             <tbody>
-                <?php if(!empty($facturas)): ?>
-                    <?php foreach($facturas as $factura): ?>
+                <?php if (!empty($facturas)): ?>
+                    <?php foreach ($facturas as $factura): ?>
                         <tr>
                             <td><?php echo $factura['ID_Factura']; ?></td>
                             <td><?php echo $factura['Fecha']; ?></td>
@@ -145,4 +148,5 @@ $facturas = $facturaController->verFacturas();
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>
