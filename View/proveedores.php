@@ -1,7 +1,7 @@
 <?php include('includes/header.php'); ?>
-<?php include('../Model/conexionModel.php');
-include('../Model/proveedorModel.php');
-include('../Controller/proveedorController.php');
+<?php require_once('../Model/conexionModel.php');
+require_once('../Model/proveedorModel.php');
+require_once('../Controller/proveedorController.php');
 
 // Función para obtener proveedor por ID
 function obtenerProveedorPorId($id)

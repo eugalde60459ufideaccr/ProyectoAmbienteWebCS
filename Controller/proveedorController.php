@@ -1,17 +1,18 @@
 <?php
 // Requerir el modelo de proveedor para interactuar con el base de datos
 require_once('../Model/proveedorModel.php');
+require_once('../Model/conexionModel.php');
 
 class ProveedorController
 {
     private $proveedorModel;
-
-    // Constructor para inicializar el modelo de proveedor
+    // Constructor para inicializar el modelo de proveedor con la conexión a la base de datos
     public function __construct()
     {
-        $this->proveedorModel = new ProveedorModel();
+        $conn = new Conexion();
+        $conn->getConn();
+        $this->proveedorModel = new ProveedorModel($conn);
     }
-
     // Método para manejar la creación de un nuevo proveedor
     public function crearProveedor($ID_Proveedor, $Nombre, $Contacto)
     {

@@ -1,10 +1,7 @@
 <?php include('includes/header.php'); ?>
-<?php include('../Model/conexionModel.php');
-include('../Model/productoModel.php');
-include('../Controller/productoController.php');
-include('./detallesProducto.php');
-
-require_once('../Model/conexionModel.php'); // Asegúrate de que la ruta es correcta
+<?php require_once('../Model/conexionModel.php');
+require_once('../Model/productoModel.php');
+require_once('../Controller/productoController.php');
 
 // Inicializar la conexión
 $conn = (new Conexion())->getConn();
