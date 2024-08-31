@@ -8,7 +8,7 @@ include('../Model/conexionModel.php');
 include('../Model/productoModel.php');
 include('../Controller/productoController.php');
 
-// Obtener detalles del producto
+// Obtener detalles del productoss
 $id_producto = $_GET['ID_Producto'];
 $producto = obtenerProductoPorId($id_producto);
 ?>
