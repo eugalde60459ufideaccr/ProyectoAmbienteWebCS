@@ -1,7 +1,5 @@
 <?php include('includes/header.php'); ?>
 <?php
-require_once('../Model/conexionModel.php');
-require_once('../Model/productoModel.php');
 require_once('../Controller/productoController.php');
 
 // Crear una instancia del controlador de productos
@@ -20,6 +18,7 @@ $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <head>
     <title>Productos</title>
+    <?php include('includes/header.php'); ?>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -86,56 +85,169 @@ $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             background-color: #CD5C5C;
             /* Un tono más oscuro para el hover */
         }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        footer .container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        footer .container div {
-            flex: 1;
-            padding: 10px;
-        }
-
-        footer h4 {
-            margin-bottom: 10px;
-            color: #FF6347;
-        }
-
-        footer p {
-            font-size: 14px;
-        }
-
-        footer a {
-            color: #FF6347;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 
 <body>
     <h1>Productos</h1>
-    <div class="product-grid">
+    <div class="products-grid">
         <?php foreach ($productos as $row): ?>
             <div class="product-item">
-                <img src="ruta/a/imagen_del_producto.jpg" alt="Producto" style="width:100%;">
+                <img src="" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($productos as $row): ?>
+            <div class="product-item2">
+                <img src="" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($productos as $row): ?>
+            <div class="product-item3">
+                <img src="" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($productos as $row): ?>
+            <div class="product-item4">
+                <img src="" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($productos as $row): ?>
+            <div class="product-item5">
+                <img src="" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($productos as $row): ?>
+            <div class="product-item6">
+                <img src="" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($productos as $row): ?>
+            <div class="product-item7">
+                <img src="" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($productos as $row): ?>
+            <div class="product-item8">
+                <img src="" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($productos as $row): ?>
+            <div class="product-item9">
+                <img src="" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($productos as $row): ?>
+            <div class="product-item10">
+                <img src="" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($productos as $row): ?>
+            <div class="product-item11">
+                <img src="" alt="Producto" style="width:100%;">
+                <h3><?php echo $row['Nombre']; ?></h3>
+                <p><?php echo $row['Descripcion']; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
+                <p>
+                    <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
+                    <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
+                </p>
+                <a href="productos.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Ver Detalles</a>
+                <a href="facturas.php?id=<?php echo $row['ID_Producto']; ?>" class="btn">Comprar Ahora</a>
+            </div>
+        <?php endforeach; ?>
+        <?php foreach ($productos as $row): ?>
+            <div class="product-item12">
+                <img src="" alt="Producto" style="width:100%;">
                 <h3><?php echo $row['Nombre']; ?></h3>
                 <p><?php echo $row['Descripcion']; ?></p>
                 <p class="price">₡<?php echo $row['Precio']; ?></p>
@@ -148,7 +260,7 @@ $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         <?php endforeach; ?>
     </div>
+    <?php include('includes/footer.php'); ?>
 </body>
 
 </html>
-<?php include('includes/footer.php'); ?>
