@@ -1,134 +1,62 @@
-<?php include('includes/header.php'); ?>
-<?php require_once('../Model/conexionModel.php');
-require_once('../Model/productoModel.php');
+<?php
 require_once('../Controller/productoController.php');
 
-// Inicializar la conexión
-$conn = (new Conexion())->getConn();
+// Crear una instancia del controlador de productos
+$productoController = new ProductoController();
 
-// Verifica si la conexión fue exitosa
-if ($conn) {
-    // Obtener lista de productos
-    $stmt = $conn->query("SELECT * FROM producto");
-    $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} else {
-    die("Error al conectar a la base de datos.");
-}
-
-// Función para obtener producto por ID
-function obtenerProductoPorId($id)
-{
-    global $conn;
-    $resultado = $conn->query("SELECT * FROM productos WHERE id = $id");
-    return $resultado->fetch(PDO::FETCH_ASSOC);
-}
-
-// Operaciones CRUD
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Crear o actualizar producto
-    $nombre = $_POST['nombre'];
-    $descripcion = $_POST['descripcion'];
-    $precio = $_POST['precio'];
-    $stock = $_POST['stock'];
-    $id_categoria = $_POST['id_categoria'];
-    $id_proveedor = $_POST['id_proveedor'];
-    if (isset($_POST['id'])) {
-        // Actualizar producto
-        $id = $_POST['id'];
-        $conn->query("UPDATE producto SET Nombre='$nombre', Descripcion='$descripcion', Precio='$precio', Stock='$stock', ID_Categoria='$id_categoria', ID_Proveedor='$id_proveedor' WHERE id=$id");
-        // Crear nuevo producto
-        $conn->query("INSERT INTO productos (Nombre, Descripcion, Precio, Stock, ID_Categoria, ID_Proveedor) VALUES ('$nombre', '$descripcion', '$precio', '$stock', '$id_categoria', '$id_proveedor')");
-    }
-} elseif (isset($_GET['delete'])) {
-    // Eliminar producto
-    $id = $_GET['delete'];
-    $conexion->query("DELETE FROM producto WHERE id=$id");
-}
-
-// Obtener lista de productoss
-$productos = $conn->query("SELECT * FROM producto");
-
-// Obtener producto específico si se solicita
-$producto = null;
-if (isset($_GET['id'])) {
-    $producto = obtenerProductoPorId($_GET['id']);
-}
+// Obtener todas las productos usando la instancia del controlador
+$productos = $productoController->verProductos();
 ?>
-
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Productos</title>
+    <?php include('includes/header.php'); ?>
 </head>
 
 <body>
-    <h1>Productos</h1>
-    <form method="POST" action="productosAdmin.php">
-        <input type="hidden" name="id" value="<?php echo isset($_GET['edit']) ? $_GET['edit'] : ''; ?>">
-        <input type="text" name="nombre" placeholder="Nombre" required>
-        <input type="text" name="descripcion" placeholder="Descripción" required>
-        <input type="number" name="precio" placeholder="Precio" required>
-        <input type="number" name="stock" placeholder="Stock" required>
-        <input type="number" name="id_categoria" placeholder="ID Categoría" required>
-        <input type="number" name="id_proveedor" placeholder="ID Proveedor" required>
-        <button type="submit">Guardar</button>
-    </form>
-    <table>
-        <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>ID Categoría</th>
-            <th>ID Proveedor</th>
-            <th>Acciones</th>
-        </tr>
-        <?php while ($row = $productos->fetchAll(PDO::FETCH_ASSOC)): ?>
-            <tr>
-                <td><?php echo $row['Nombre']; ?></td>
-                <td><?php echo $row['Descripcion']; ?></td>
-                <td><?php echo $row['Precio']; ?></td>
-                <td><?php echo $row['Stock']; ?></td>
-                <td><?php echo $row['ID_Categoria']; ?></td>
-                <td><?php echo $row['ID_Proveedor']; ?></td>
-                <td>
-                    <a href="productosAdmin.php?edit=<?php echo $row['id']; ?>">Editar</a>
-                    <a href="productosAdmin.php?delete=<?php echo $row['id']; ?>">Eliminar</a>
-                    <a href="productosAdmin.php?id=<?php echo $row['id']; ?>">Detalles</a>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </table>
-
-    <?php if ($producto): ?>
-        <table>
-            <tr>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>ID Categoría</th>
-                <th>ID Proveedor</th>
-                <th>Acciones</th>
-            </tr>
-            <?php while ($row = $productos->fetch(PDO::FETCH_ASSOC)): ?>
+    <main class="container my-5">
+        <h2 class="text-center mb-4">Gestión de Productos</h2>
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
                 <tr>
-                    <td><?php echo $row['Nombre']; ?></td>
-                    <td><?php echo $row['Descripcion']; ?></td>
-                    <td><?php echo $row['Precio']; ?></td>
-                    <td><?php echo $row['Stock']; ?></td>
-                    <td><?php echo $row['ID_Categoria']; ?></td>
-                    <td><?php echo $row['ID_Proveedor']; ?></td>
-                    <td>
-                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarProductoModal" data-id="<?php echo $producto['ID_Producto']; ?>" precio="<?php echo $producto['Precio']; ?>" stock="<?php echo $producto['Stock']; ?>" categoria="<?php echo $producto['ID_Categoria']; ?>" proveedor="<?php echo $producto['ID_Proveedor']; ?>">Editar</button>
-                        <a href="../Controller/facturaController.php?action=eliminar&id=<?php echo $producto['ID_Producto']; ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta factura?');">Eliminar</a>
-                    </td>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>ID Categoría</th>
+                    <th>ID Proveedor</th>
+                    <th>Acciones</th>
                 </tr>
-            <?php endwhile; ?>
+            </thead>
+            <tbody>
+                <?php if (!empty($productos)): ?>
+                    <?php foreach ($productos as $producto): ?>
+                        <tr>
+                            <td><?php echo $producto['ID_Producto']; ?></td>
+                            <td><?php echo $producto['Nombre']; ?></td>
+                            <td><?php echo $producto['Descripcion']; ?></td>
+                            <td><?php echo $producto['Precio']; ?></td>
+                            <td><?php echo $producto['Stock']; ?></td>
+                            <td><?php echo $producto['ID_cATEGORIA']; ?></td>
+                            <td><?php echo $producto['ID_PROVEEDOR']; ?></td>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarProductoModal" data-id="<?php echo $producto['ID_Producto']; ?> " nombre="<?php echo $producto['Nombre']; ?>" descripcion="<?php echo $producto['Descripcion']; ?>" precio="<?php echo $producto['Precio']; ?>" stock="<?php echo $producto['Stock']; ?>" id_categoria="<?php echo $producto['ID_Categoria']; ?>" id_proveedor="<?php echo $producto['ID_Proveedor']; ?>">Editar</button>
+                                <a href=" ../Controller/productoController.php?action=eliminar&id=<?php echo $producto['ID_Producto']; ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="5" class="text-center">No hay productos disponibles</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
         </table>
-    <?php endif; ?>
-
+        <div class="text-center">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crearProductoModal">Añadir Nuevo Producto</button>
+        </div>
+    </main>
     <?php include('includes/footer.php'); ?>
 
     <!-- Modal para Crear Producto -->

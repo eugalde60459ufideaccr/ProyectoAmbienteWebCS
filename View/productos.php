@@ -4,6 +4,9 @@ require_once('../Model/conexionModel.php');
 require_once('../Model/productoModel.php');
 require_once('../Controller/productoController.php');
 
+// Crear una instancia del controlador de productos
+$productoController = new ProductoController();
+
 // Obtener la conexión a través de la clase Conexion
 $conn = (new Conexion())->getConn();
 
@@ -135,7 +138,7 @@ $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <img src="ruta/a/imagen_del_producto.jpg" alt="Producto" style="width:100%;">
                 <h3><?php echo $row['Nombre']; ?></h3>
                 <p><?php echo $row['Descripcion']; ?></p>
-                <p class="price">Desde: ₡<?php echo $row['Precio']; ?> - Hasta: ₡<?php echo $row['Precio'] + 1000; ?></p>
+                <p class="price">₡<?php echo $row['Precio']; ?></p>
                 <p>
                     <?php echo "ID Categoría: " . $row['ID_Categoria']; ?><br>
                     <?php echo "ID Proveedor: " . $row['ID_Proveedor']; ?>
